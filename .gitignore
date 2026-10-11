@@ -1,0 +1,17 @@
+# Internal content brief (carries unpublished notes; never commit)
+_reference/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs and local scratch
+*.log
+__pycache__/
+*.tmp

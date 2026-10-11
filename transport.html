@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transport Component — Smart Travel Planner (R26-IT-155)</title>
+  <meta name="description" content="Transport recommendation component of the Smart Travel Planner (R26-IT-155, SLIIT), by Haifa M.A.F.: route audit, calibration against real road routing, method, results and stated limitations.">
+  <meta name="theme-color" content="#1a2622">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__id">R26-IT-155</span>
+        <span class="brand__name">Smart Travel Planner</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recommendation.html">Recommendation</a></li>
+          <li><a href="transport.html" aria-current="page">Transport</a></li>
+          <li><a href="budget.html">Budget</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1. Header -->
+    <section class="hero" aria-labelledby="page-title">
+      <div class="container">
+        <span class="eyebrow">Component &middot; Transport</span>
+        <h1 id="page-title">Transport recommendation</h1>
+        <dl class="meta-strip">
+          <div><dt>Owner</dt><dd>Haifa M.A.F.</dd></div>
+          <div><dt>Reg. No</dt><dd>IT22211064</dd></div>
+          <div><dt>Service</dt><dd><code>transport/</code></dd></div>
+          <div><dt>Port</dt><dd>8002</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 2. Sub-objective and tasks -->
+    <section class="section" id="subobjective" aria-labelledby="subobjective-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Sub-objective</span>
+          <h2 id="subobjective-title">What this component sets out to do</h2>
+        </div>
+        <blockquote class="pullquote">
+          <p>To suggest the best mode of transport between attractions based on distance, time, cost and convenience, ensuring efficient and practical travel during multi-day trips.</p>
+          <footer>Sub-objective, Topic Assessment Form</footer>
+        </blockquote>
+        <div class="measure">
+          <h3 class="mt-0">Tasks</h3>
+          <ol class="mb-0">
+            <li>Calculate distances and estimated travel times between attractions.</li>
+            <li>Gather typical transport options and their cost and time metrics.</li>
+            <li>Recommend the optimal mode for each trip segment using simple rules.</li>
+            <li>Test recommendations on sample itineraries.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Novelty -->
+    <section class="section" id="novelty" aria-labelledby="novelty-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Novelty</span>
+          <h2 id="novelty-title">The novelty claim</h2>
+        </div>
+        <blockquote class="pullquote">
+          <p>Unlike planners that assume a single travel mode, this module provides adaptive transport recommendations, improving travel efficiency and convenience without requiring complex AI or optimization.</p>
+          <footer>Novelty, Topic Assessment Form</footer>
+        </blockquote>
+        <div class="measure">
+          <h3 class="mt-0">What it deliberately does not claim</h3>
+          <p class="mb-0">It does not claim complex AI, and it does not claim optimization. The engine is rule-based: there is no training and there are no fitted coefficients. Every weight is declared and every elimination carries a stated reason. That restraint is the claim.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Data foundation -->
+    <section class="section" id="data" aria-labelledby="data-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Data foundation</span>
+          <h2 id="data-title">The route audit</h2>
+          <p class="lead"><code>smart_travel_transport_route_v1_0_reanchored.csv</code>: 15,336 rows, 2,556 origin-destination pairs, 72 distinct attractions.</p>
+          <p class="small muted">Source: <code>reports/route_audit.md</code></p>
+        </div>
+
+        <div class="grid">
+          <div class="span-7">
+            <h3 class="mt-0">A data problem found and fixed: duplicate modes</h3>
+            <p>Every pair has 6 rows but only 3–4 <em>distinct</em> modes. All 2,556 pairs contain the same mode more than once, with different time and cost estimates for an identical leg. The median time spread between duplicates is 8 minutes; the maximum is 99.</p>
+            <p><strong>Why it had to be resolved.</strong> Treating duplicates as independent candidates would let one mode occupy two ranking positions.</p>
+            <p class="mb-0"><strong>The fix.</strong> Take the median per mode, and carry the spread as uncertainty.</p>
+          </div>
+          <div class="span-5">
+            <div class="table-wrap" role="region" aria-labelledby="modes-caption" tabindex="0">
+              <table class="table">
+                <caption id="modes-caption">Rows per mode in the route dataset.</caption>
+                <thead>
+                  <tr><th scope="col">Mode</th><th scope="col" class="num">Rows</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Bus</th><td class="num">5,080</td></tr>
+                  <tr><th scope="row">Private car</th><td class="num">5,034</td></tr>
+                  <tr><th scope="row">Van</th><td class="num">1,852</td></tr>
+                  <tr><th scope="row">Taxi</th><td class="num">1,608</td></tr>
+                  <tr><th scope="row">Train + local transfer</th><td class="num">1,220</td></tr>
+                  <tr><th scope="row">Motorcycle</th><td class="num">252</td></tr>
+                  <tr><th scope="row">Tuk-tuk</th><td class="num">188</td></tr>
+                  <tr><th scope="row">Walking</th><td class="num">78</td></tr>
+                  <tr><th scope="row">Ride-hailing</th><td class="num">24</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><th scope="row">Total</th><td class="num">15,336</td></tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <h3>Coordinate quality</h3>
+        <div class="table-wrap measure" role="region" aria-labelledby="coords-caption" tabindex="0">
+          <table class="table">
+            <caption id="coords-caption">Attraction coordinates. Unreliable means sources disagree by over 1 km, or there is no coordinate.</caption>
+            <tbody>
+              <tr><th scope="row">Attractions in the registry</th><td class="num">258</td></tr>
+              <tr><th scope="row">Attractions used in routes</th><td class="num">72</td></tr>
+              <tr><th scope="row">Attractions with unreliable coordinates, overall</th><td class="num">75</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Calibration (centrepiece) -->
+    <section class="section section--tint" id="calibration" aria-labelledby="calibration-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Calibration</span>
+          <h2 id="calibration-title">Calibration against real road routing</h2>
+          <p class="lead">Every distance in the source dataset was computed, not measured:</p>
+<pre class="code measure"><code>distance = haversine × synthetic_detour_factor</code></pre>
+          <p class="measure">Those distances were measured against <strong>OSRM</strong> real road routing on a stratified sample of <strong>54 origin-destination pairs</strong>.</p>
+          <p class="small muted">Source: <code>reports/calibration.md</code></p>
+        </div>
+
+        <div class="grid">
+          <div class="span-4">
+            <p class="stat">
+              <span class="stat__value">44.4%</span>
+              <span class="stat__label">of sampled pairs fall within 10% of the real road distance</span>
+            </p>
+          </div>
+          <div class="span-8">
+            <div class="table-wrap" role="region" aria-labelledby="calib-caption" tabindex="0">
+              <table class="table">
+                <caption id="calib-caption">Dataset distance against OSRM road routing, 54 stratified pairs.</caption>
+                <thead>
+                  <tr><th scope="col">Metric</th><th scope="col" class="num">Value</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Median distance error</th><td class="num">−2.87%</td></tr>
+                  <tr><th scope="row">Mean distance error</th><td class="num">−4.51%</td></tr>
+                  <tr><th scope="row">Within 10% of real</th><td class="num">44.4%</td></tr>
+                  <tr><th scope="row">Mean absolute error</th><td class="num">21.02 km</td></tr>
+                  <tr><th scope="row">Median OSRM detour factor</th><td class="num">1.353</td></tr>
+                  <tr><th scope="row">Median dataset detour factor</th><td class="num">1.329</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mb-0"><strong>The median error is negative, so across the sample as a whole the dataset understates real road distance.</strong> The dataset’s median detour factor (1.329) is also below OSRM’s (1.353).</p>
+          </div>
+        </div>
+
+        <div class="grid mt-7">
+          <div class="span-6">
+            <h3 class="mt-0">Correction factors by terrain</h3>
+            <div class="table-wrap" role="region" aria-labelledby="terrain-caption" tabindex="0">
+              <table class="table">
+                <caption id="terrain-caption">Distance correction factors derived from the OSRM comparison.</caption>
+                <thead>
+                  <tr><th scope="col">Terrain class</th><th scope="col" class="num">Distance factor</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row"><code>coastal_or_mixed</code></th><td class="num">0.944</td></tr>
+                  <tr><th scope="row"><code>hilly_or_mountainous</code></th><td class="num">1.1261</td></tr>
+                  <tr><th scope="row"><code>rolling_or_local_hill</code></th><td class="num">1.0658</td></tr>
+                  <tr><th scope="row"><code>rural_lowland</code></th><td class="num">1.1289</td></tr>
+                  <tr><th scope="row"><code>urban_or_lowland</code></th><td class="num">0.9268</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Each factor multiplies the dataset distance. The direction is not uniform: on the coast (+5.94%) and in towns (+7.93%) the dataset <strong>overstates</strong> real road distance, so those factors are below 1. In hill country (−11.19%), rural lowland (−11.39%) and rolling terrain (−6.13%) it <strong>understates</strong>, so those are above 1. The −2.87% median is the overall figure, not a per-terrain one.</p>
+            <p class="mb-0">The factors and the error percentages are two different medians over the same pairs: each factor is the median of <code>osrm_km / dataset_km</code> for that terrain, while the error is the median of the per-pair percentage errors. A median of ratios is not the reciprocal of a median of errors, so the two columns do not invert each other exactly.</p>
+          </div>
+          <div class="span-6">
+            <h3 class="mt-0">Fallbacks</h3>
+            <div class="table-wrap" role="region" aria-labelledby="fallback-caption" tabindex="0">
+              <table class="table">
+                <caption id="fallback-caption">Factors outside the terrain table.</caption>
+                <tbody>
+                  <tr><th scope="row">Global fallback (distance)</th><td class="num">1.0295</td></tr>
+                  <tr><th scope="row">Car time factor</th><td class="num">0.8396</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mb-0">The car time factor is below 1, so it shortens the dataset’s times toward OSRM’s. OSRM durations assume unimpeded travel, so the calibrated times are optimistic in two ways: shortened by the factor, and benchmarked against a free-flow model.</p>
+          </div>
+        </div>
+
+        <div class="callout callout--key mt-7">
+          <span class="eyebrow callout__num">The point</span>
+          <h3 class="callout__title">The component did not trust its own synthetic distances</h3>
+          <p class="mb-0">It measured them against real road routing and corrected them per terrain. That is the strongest methodological claim on this page.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Method: the four-stage scoring engine -->
+    <section class="section" id="method" aria-labelledby="method-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Method</span>
+          <h2 id="method-title">The four-stage scoring engine</h2>
+          <p class="lead">Rule-based multi-criteria ranking. No training, no fitted coefficients: every weight is declared and every elimination carries a stated reason.</p>
+          <p class="small muted">Source: <code>reports/scoring_engine.md</code></p>
+        </div>
+
+        <h3 class="mt-0">The order of the stages is the design argument</h3>
+        <ol class="stages">
+          <li><span class="stages__name">Options</span><span class="stages__desc">The candidate modes for the leg.</span></li>
+          <li><span class="stages__name">Hard feasibility filter</span><span class="stages__desc">Removes modes that break a rule, each with a stated reason.</span></li>
+          <li><span class="stages__name">Criteria scoring</span><span class="stages__desc">Scores the remaining modes under a declared weight profile.</span></li>
+          <li><span class="stages__name">Stated preference</span><span class="stages__desc">Adds 0.15 to a preferred mode’s score.</span></li>
+        </ol>
+        <p class="lead measure">A preference can move a ranking it cannot decide, and cannot return a mode the filter removed.</p>
+
+        <div class="grid mt-7">
+          <div class="span-5">
+            <h3 class="mt-0">Criteria</h3>
+            <div class="table-wrap" role="region" aria-labelledby="criteria-caption" tabindex="0">
+              <table class="table">
+                <caption id="criteria-caption">The six scoring criteria.</caption>
+                <thead>
+                  <tr><th scope="col">Criterion</th><th scope="col">Direction</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Cost</th><td>Lower is better</td></tr>
+                  <tr><th scope="row">Time</th><td>Lower is better</td></tr>
+                  <tr><th scope="row">Convenience</th><td>Higher is better</td></tr>
+                  <tr><th scope="row">Transfers</th><td>Lower is better</td></tr>
+                  <tr><th scope="row">Accessibility</th><td>Higher is better</td></tr>
+                  <tr><th scope="row">Weather</th><td>Higher is better; applied in rain</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="span-7">
+            <h3 class="mt-0">Weight profiles</h3>
+            <p>A profile is selected from the tourist’s context.</p>
+            <div class="table-wrap" role="region" aria-labelledby="profiles-caption" tabindex="0">
+              <table class="table table--wide">
+                <caption id="profiles-caption">Criterion weights per profile. Largest weight per profile in bold. Each profile’s weights sum to 1.00.</caption>
+                <thead>
+                  <tr><th scope="col">Profile</th><th scope="col" class="num">Cost</th><th scope="col" class="num">Time</th><th scope="col" class="num">Conv.</th><th scope="col" class="num">Transfers</th><th scope="col" class="num">Access.</th><th scope="col" class="num">Weather</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row"><code>balanced</code></th><td class="num"><strong>0.25</strong></td><td class="num"><strong>0.25</strong></td><td class="num">0.20</td><td class="num">0.10</td><td class="num">0.10</td><td class="num">0.10</td></tr>
+                  <tr><th scope="row"><code>budget</code></th><td class="num"><strong>0.45</strong></td><td class="num">0.15</td><td class="num">0.15</td><td class="num">0.10</td><td class="num">0.08</td><td class="num">0.07</td></tr>
+                  <tr><th scope="row"><code>time_critical</code></th><td class="num">0.10</td><td class="num"><strong>0.45</strong></td><td class="num">0.20</td><td class="num">0.15</td><td class="num">0.05</td><td class="num">0.05</td></tr>
+                  <tr><th scope="row"><code>comfort</code></th><td class="num">0.10</td><td class="num">0.20</td><td class="num"><strong>0.35</strong></td><td class="num">0.15</td><td class="num">0.10</td><td class="num">0.10</td></tr>
+                  <tr><th scope="row"><code>accessible</code></th><td class="num">0.15</td><td class="num">0.15</td><td class="num">0.20</td><td class="num">0.10</td><td class="num"><strong>0.35</strong></td><td class="num">0.05</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <h3 class="callout__title">Accessibility takes precedence over everything else</h3>
+          <p class="mb-0">An accessibility requirement overrides every other criterion. No cost saving compensates for a mode the tourist cannot board.</p>
+        </div>
+
+        <div class="grid mt-7">
+          <div class="span-5">
+            <h3 class="mt-0">Mode availability by distance band</h3>
+            <p>Decided before any tourist preference.</p>
+            <div class="table-wrap" role="region" aria-labelledby="bands-caption" tabindex="0">
+              <table class="table">
+                <caption id="bands-caption">Distance range in which each mode is available.</caption>
+                <thead>
+                  <tr><th scope="col">Mode</th><th scope="col" class="num">From km</th><th scope="col" class="num">To km</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Walking</th><td class="num">0</td><td class="num">5</td></tr>
+                  <tr><th scope="row">Tuk-tuk</th><td class="num">0</td><td class="num">10</td></tr>
+                  <tr><th scope="row">Ride-hailing</th><td class="num">0</td><td class="num">100</td></tr>
+                  <tr><th scope="row">Motorcycle</th><td class="num">0</td><td class="num">120</td></tr>
+                  <tr><th scope="row">Bus</th><td class="num">0.5</td><td class="num">600</td></tr>
+                  <tr><th scope="row">Train + local transfer</th><td class="num">8</td><td class="num">600</td></tr>
+                  <tr><th scope="row">Taxi / Private car / Van</th><td class="num">0</td><td class="num">600</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="span-7">
+            <h3 class="mt-0">Feasibility rules</h3>
+            <p>A mode is eliminated, with the reason stated, when:</p>
+            <ol>
+              <li>The leg is outside its operating range.</li>
+              <li>Its capacity is below the party size.</li>
+              <li>The tourist requires wheelchair access and the mode is unsuitable.</li>
+              <li>The leg is longer or slower than the stated maximum.</li>
+              <li>It exceeds a cost or transfer ceiling.</li>
+              <li>The route data marks it infeasible.</li>
+              <li>It is a fully exposed mode in heavy rain.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="grid mt-7">
+          <article class="span-6 card" aria-labelledby="never-omitted-title">
+            <span class="eyebrow">Design principle</span>
+            <h3 class="card__title" id="never-omitted-title">Unavailable, never omitted</h3>
+            <p class="mb-0">A mode outside its band is returned marked unavailable, with the reason. It is never left out, because “a response that lists only the winner cannot be challenged.”</p>
+          </article>
+          <article class="span-6 card" aria-labelledby="boost-title">
+            <span class="eyebrow">Stated preference</span>
+            <h3 class="card__title" id="boost-title">A 0.15 boost, never a filter</h3>
+            <p class="mb-0">A stated preferred mode adds 0.15 to the score it already earned. The boost is applied after the criteria, never as a filter.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Results -->
+    <section class="section" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Results</span>
+          <h2 id="results-title">Results</h2>
+          <p class="lead">What the engine chose across the route dataset. All data is synthetic.</p>
+        </div>
+        <div class="grid">
+          <div class="span-5">
+            <div class="table-wrap" role="region" aria-labelledby="scored-caption" tabindex="0">
+              <table class="table">
+                <caption id="scored-caption">Scoring run over the route dataset.</caption>
+                <tbody>
+                  <tr><th scope="row">Pairs scored</th><td class="num">2,554</td></tr>
+                  <tr><th scope="row">Mean candidate modes</th><td class="num">3.36</td></tr>
+                  <tr><th scope="row">Mean feasible modes</th><td class="num">3.34</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="span-7">
+            <div class="table-wrap" role="region" aria-labelledby="chosen-caption" tabindex="0">
+              <table class="table">
+                <caption id="chosen-caption">Chosen mode under the balanced profile.</caption>
+                <thead>
+                  <tr><th scope="col">Mode</th><th scope="col" class="num">Pairs</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="is-highlight"><th scope="row">Private car</th><td class="num">2,515</td></tr>
+                  <tr><th scope="row">Tuk-tuk</th><td class="num">21</td></tr>
+                  <tr><th scope="row">Ride-hailing</th><td class="num">9</td></tr>
+                  <tr><th scope="row">Taxi</th><td class="num">4</td></tr>
+                  <tr><th scope="row">Bus</th><td class="num">3</td></tr>
+                  <tr><th scope="row">Walking</th><td class="num">2</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><th scope="row">Total</th><td class="num">2,554</td></tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p class="measure">2,554 of the dataset’s 2,556 pairs were scored. The two excluded pairs had no feasible mode at all: every candidate was eliminated by the filter, so they produce no chosen mode and appear in neither figure.</p>
+        <p class="measure"><strong>Under the balanced profile, private car is chosen for 2,515 of 2,554 pairs.</strong> The report states that a concentrated distribution is expected: the balanced profile favours modes that are simultaneously cheap, quick and convenient.</p>
+        <p class="measure mb-0">These figures describe what the engine chooses. They are not an accuracy measurement against observed tourist choices.</p>
+      </div>
+    </section>
+
+    <!-- 8. Stated limitations -->
+    <section class="section" id="limitations" aria-labelledby="limitations-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Stated limitations</span>
+          <h2 id="limitations-title">Stated limitations</h2>
+        </div>
+        <div class="callout">
+          <h3 class="callout__title">Limitations of the calibration</h3>
+          <ol class="mb-0">
+            <li><strong>Sample size.</strong> 54 of 2,556 pairs were checked; the public OSRM server is rate limited.</li>
+            <li><strong>Driving only.</strong> Tuk-tuk, van, taxi and ride-hailing have no OSRM profile, so their times remain derived from speed assumptions.</li>
+            <li><strong>Free traffic conditions.</strong> OSRM assumes unimpeded travel. Real Sri Lankan drive times, especially around Colombo, are longer at peak.</li>
+            <li><strong>Coordinate quality.</strong> Only pairs with reliable registry coordinates were used.</li>
+          </ol>
+        </div>
+        <p class="small muted">Source: <code>reports/calibration.md</code></p>
+
+        <div class="callout">
+          <h3 class="callout__title">Limitations of the scoring engine</h3>
+          <ol class="mb-0">
+            <li><strong>No accuracy evaluation exists.</strong> The fourth task, testing recommendations on sample itineraries, has no result. An expert-panel evaluation against ground truth is designed (<code>transport/scripts/expert_evaluation.py</code>) but has not been run: the ground-truth labels have not been collected. Whether the engine chooses the right mode is not established.</li>
+            <li><strong>The weights are declared, not fitted.</strong> That is deliberate and makes every decision inspectable. It also means no weight profile has been validated against observed tourist behaviour.</li>
+            <li><strong>One mode almost always wins.</strong> Private car is chosen for 2,515 of 2,554 pairs under the balanced profile: 98.5%. A rule set that returns one answer almost always is hard to distinguish from a constant.</li>
+            <li><strong>The feasibility filter rarely binds.</strong> Mean candidate modes are 3.36 against 3.34 feasible: about 0.02 modes removed per pair. It eliminated every candidate for only two pairs. The filter is central to the design argument but does little work on this dataset.</li>
+            <li><strong>Only driving is validated.</strong> OSRM has no profile for tuk-tuk, van, taxi or ride-hailing, and bus, train, motorcycle and walking are not validated either. Private car is effectively the only calibrated mode.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Contribution -->
+    <section class="section" id="contribution" aria-labelledby="contribution-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Contribution to the system</span>
+          <h2 id="contribution-title">How the planner uses it</h2>
+        </div>
+        <div class="grid">
+          <div class="span-7 measure">
+            <p class="mb-0">The component prices and selects the mode for <strong>every leg</strong> of the itinerary the planner builds, including legs from the 2,778 derived towns.</p>
+          </div>
+          <div class="span-5">
+            <h3 class="mt-0">Shown per leg in the day-by-day timeline</h3>
+            <ul class="rule-list">
+              <li>Distance</li>
+              <li>Duration</li>
+              <li>Cost</li>
+              <li>Mode</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Onward links -->
+    <section class="section section--tint" id="more" aria-labelledby="more-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Continue</span>
+          <h2 id="more-title">Elsewhere on this site</h2>
+        </div>
+        <div class="grid">
+          <article class="span-4 card card--link">
+            <p class="card__meta">Overview</p>
+            <h3 class="card__title"><a href="index.html">Home</a></h3>
+            <p>The research problem, the three gaps and the system architecture.</p>
+            <p class="card__cta" aria-hidden="true">Back to Home</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Shazni M.S.M. &middot; IT22915368</p>
+            <h3 class="card__title"><a href="recommendation.html">Recommendation</a></h3>
+            <p>Ranks attractions for each tourist and updates their preference weights on every interaction, so the next ranking uses them immediately.</p>
+            <p class="card__cta" aria-hidden="true">Read the recommendation page</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Vithanage D. D. H. L. J &middot; IT22369406</p>
+            <h3 class="card__title"><a href="budget.html">Budget</a></h3>
+            <p>Supplies the budget breakdown by category, shown against the group’s total budget on every itinerary, and the explanation of what was left out and why.</p>
+            <p class="card__cta" aria-hidden="true">Read the budget page</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div class="span-6">
+          <p class="site-footer__title">Smart Travel Planner: Personalization and Operational Efficiency for Tourists</p>
+          <p class="mb-0">Project R26-IT-155 &middot; AIMS research group &middot; B.Sc. (Hons) in Information Technology, SLIIT &middot; Supervisor: Prof. Dasuni Nawinna</p>
+        </div>
+        <div class="span-3">
+          <h2>Pages</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="recommendation.html">Recommendation</a></li>
+            <li><a href="transport.html">Transport</a></li>
+            <li><a href="budget.html">Budget</a></li>
+          </ul>
+        </div>
+        <div class="span-3">
+          <h2>Team</h2>
+          <ul>
+            <li>Shazni M.S.M.</li>
+            <li>Haifa M.A.F.</li>
+            <li>Vithanage D. D. H. L. J</li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer__meta mb-0">SLIIT final-year research project, 2026.</p>
+    </div>
+  </footer>
+</body>
+</html>

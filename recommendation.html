@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recommendation Component — Smart Travel Planner (R26-IT-155)</title>
+  <meta name="description" content="Preference modelling and recommendation component of the Smart Travel Planner (R26-IT-155, SLIIT), by Shazni M.S.M.: method, results and stated limitations.">
+  <meta name="theme-color" content="#1a2622">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__id">R26-IT-155</span>
+        <span class="brand__name">Smart Travel Planner</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recommendation.html" aria-current="page">Recommendation</a></li>
+          <li><a href="transport.html">Transport</a></li>
+          <li><a href="budget.html">Budget</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1. Header -->
+    <section class="hero" aria-labelledby="page-title">
+      <div class="container">
+        <span class="eyebrow">Component &middot; Recommendation</span>
+        <h1 id="page-title">Preference modelling and recommendation</h1>
+        <dl class="meta-strip">
+          <div><dt>Owner</dt><dd>Shazni M.S.M.</dd></div>
+          <div><dt>Reg. No</dt><dd>IT22915368</dd></div>
+          <div><dt>Service</dt><dd><code>recommendation/</code></dd></div>
+          <div><dt>Port</dt><dd>8001</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 2. Sub-objective and tasks -->
+    <section class="section" id="subobjective" aria-labelledby="subobjective-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Sub-objective</span>
+          <h2 id="subobjective-title">What this component sets out to do</h2>
+        </div>
+        <blockquote class="pullquote">
+          <p>To develop an AI-based preference modeling and recommendation module that learns tourist interests and behaviours to provide personalized attraction recommendations aligned with user preferences and travel context.</p>
+          <footer>Sub-objective, Topic Assessment Form</footer>
+        </blockquote>
+        <div class="measure">
+          <h3 class="mt-0">Tasks</h3>
+          <ol class="mb-0">
+            <li>Analyse preference data and recommendation techniques.</li>
+            <li>Identify relevant features: interests, travel style and past selections.</li>
+            <li>Design an AI model to learn and represent preferences.</li>
+            <li>Generate personalized recommendations.</li>
+            <li>Integrate with the itinerary planning system.</li>
+            <li>Evaluate accuracy and relevance.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Novelty -->
+    <section class="section" id="novelty" aria-labelledby="novelty-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Novelty</span>
+          <h2 id="novelty-title">The novelty claim</h2>
+        </div>
+        <blockquote class="pullquote">
+          <p>A dynamic, preference-weighted recommendation engine that continuously learns and prioritizes tourist interests in real time to generate adaptive destination rankings. Unlike static or rule-based recommendation systems, it updates preference weights from user interactions throughout the trip.</p>
+          <footer>Novelty, Topic Assessment Form</footer>
+        </blockquote>
+        <p class="measure mb-0">The mechanism is built and runs end-to-end. Whether adapting during a trip improves rankings could not be shown on this dataset; see <a href="#limitations">stated limitations</a>.</p>
+      </div>
+    </section>
+
+    <!-- 4. The founding finding -->
+    <section class="section section--tint" id="finding" aria-labelledby="finding-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Founding finding</span>
+          <h2 id="finding-title">Stated interests are weakly predictive. Behaviour is learnable.</h2>
+        </div>
+        <div class="grid">
+          <div class="span-7">
+            <h3 class="mt-0">What tourists declare</h3>
+            <p>Stated interests are thin. Permutation tests on the interaction table:</p>
+            <div class="table-wrap" role="region" aria-labelledby="perm-caption" tabindex="0">
+              <table class="table">
+                <caption id="perm-caption">Permutation tests: coupling between stated interests and behaviour.</caption>
+                <thead>
+                  <tr><th scope="col">Test</th><th scope="col" class="num">Result</th><th scope="col">Reading</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Exposure against stated interests</th><td class="num">p = 0.37</td><td>Uncoupled</td></tr>
+                  <tr><th scope="row">Selection against stated interests</th><td class="num">p &lt; 0.001</td><td>Coupled, but weakly: observed 0.5495 against a null of 0.5347</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="span-5">
+            <h3 class="mt-0">What tourists do</h3>
+            <p class="stat">
+              <span class="stat__value">11.2</span>
+              <span class="stat__label">point lift. A tourist selects a category they have already chosen 50.9% of the time, against 39.7% for a category new to them.</span>
+            </p>
+          </div>
+        </div>
+        <p class="lead mb-0 mt-7"><strong>Without that gap there would be nothing for a preference model to learn.</strong> The rest of this component is built on it.</p>
+      </div>
+    </section>
+
+    <!-- 5. Method 1: preference learner -->
+    <section class="section" id="learner" aria-labelledby="learner-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Method, part 1</span>
+          <h2 id="learner-title">The preference learner</h2>
+          <p class="lead">Per tourist and per category, a Beta posterior over “would they choose an attraction of this kind”.</p>
+        </div>
+        <div class="measure">
+<pre class="code"><code>alpha_c, beta_c   pseudo-counts, seeded from the stated interests
+taste_c           = alpha_c / (alpha_c + beta_c)
+confidence_c      = n_c / (n_c + kappa)</code></pre>
+          <p>Seeding the prior from stated interests is what makes a cold tourist something other than an average tourist.</p>
+        </div>
+
+        <h3>Three mechanisms on top</h3>
+        <div class="table-wrap" role="region" aria-labelledby="mech-caption" tabindex="0">
+          <table class="table">
+            <caption id="mech-caption">Mechanisms layered on the Beta posterior. Source: <code>models/preference_learner.py</code>.</caption>
+            <thead>
+              <tr><th scope="col">Mechanism</th><th scope="col">What it does</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Graded rewards</th><td>An accept, a rating, a click that went nowhere and a silent skip are different strengths of evidence.</td></tr>
+              <tr><th scope="row">Category coupling</th><td>An observation on Beach also moves Scenic, damped by a similarity matrix <strong>estimated from co-selection</strong>, not asserted.</td></tr>
+              <tr><th scope="row">Recency</th><td>Pseudo-counts decay toward the prior with a half-life, so a taste that shifts mid-trip is tracked rather than averaged away.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="measure">Two of these mechanisms, graded rewards and category coupling, score higher on pooled AUC when removed. See <a href="#results-ablation">the ablation</a>.</p>
+
+        <h3>Trip-level tolerances</h3>
+        <p class="measure mb-0">The learner also learns how far this tourist will travel and what they will pay. A rejection for a trip-level reason, such as “too far”, updates those tolerances. It is deliberately <strong>not</strong> counted against the category.</p>
+      </div>
+    </section>
+
+    <!-- 6. Method 2: ranker -->
+    <section class="section" id="ranker" aria-labelledby="ranker-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Method, part 2</span>
+          <h2 id="ranker-title">The ranker</h2>
+          <p class="lead">A gradient-boosted model over three blocks of tourist features (trip context, stated preferences and the learned profile), scored against the candidate’s own attributes, and blended with a linear scorer by profile maturity.</p>
+          <p class="small muted">Source: <code>models/ranker.py</code></p>
+        </div>
+        <div class="grid">
+          <article class="span-6 card" aria-labelledby="blend-title">
+            <h3 class="card__title" id="blend-title">Why the blend is not a hedge</h3>
+            <p>The learned ranker beats the incumbent (the Phase 3c linear scorer, re-scored with derived factors) on tourists with history, and loses on cold-start ones. So <code>profile_maturity</code> decides the regime per tourist, rather than one model being chosen globally.</p>
+            <p>Cold start is the normal case in this data, not an edge case: <a href="#results-auc">the component’s report puts 92.5% of the user base in the cold band</a>.</p>
+            <p>The <a href="#results-ndcg">NDCG@5 results</a> show the split: the linear scorer is best on cold start, the personalized model is best where there is history.</p>
+          </article>
+          <article class="span-6 card" aria-labelledby="mmr-title">
+            <h3 class="card__title" id="mmr-title">Diversification</h3>
+            <p>Output is diversified with <abbr title="maximal marginal relevance">MMR</abbr> over categories.</p>
+            <p>A day of five beaches is a worse answer than four beaches and a viewpoint, even when it scores higher.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Feature selection -->
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Feature selection</span>
+          <h2 id="features-title">91 candidate columns: 63 selected, 28 rejected</h2>
+        </div>
+        <div class="grid">
+          <div class="span-6">
+            <div class="table-wrap" role="region" aria-labelledby="family-caption" tabindex="0">
+              <table class="table">
+                <caption id="family-caption">Feature families.</caption>
+                <thead>
+                  <tr><th scope="col">Family</th><th scope="col" class="num">Features</th><th scope="col">Note</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Interests</th><td class="num">17</td><td></td></tr>
+                  <tr><th scope="row">Travel style</th><td class="num">8</td><td></td></tr>
+                  <tr><th scope="row">Past selections</th><td class="num">9</td><td>Computed per request, not stored</td></tr>
+                  <tr><th scope="row">Travel context</th><td class="num">13</td><td></td></tr>
+                  <tr><th scope="row">Attraction attributes</th><td class="num">25</td><td></td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><th scope="row">Selected (excluding past selections)</th><td class="num">63</td><td></td></tr>
+                </tfoot>
+              </table>
+            </div>
+            <p class="small">The four families with training-table columns sum to 63. Past selections are not in the table: they are inferred by the preference learner from what the tourist did before each row and computed per request, so they are counted separately.</p>
+          </div>
+          <div class="span-6">
+            <div class="table-wrap" role="region" aria-labelledby="reject-caption" tabindex="0">
+              <table class="table">
+                <caption id="reject-caption">The 28 rejected columns, by reason.</caption>
+                <thead>
+                  <tr><th scope="col">Reason for rejection</th><th scope="col" class="num">Columns</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Leakage</th><td class="num">7</td></tr>
+                  <tr><th scope="row">Post-exposure</th><td class="num">3</td></tr>
+                  <tr><th scope="row">Identifier or provenance</th><td class="num">14</td></tr>
+                  <tr><th scope="row">Raw multi-value strings, already expanded into flags</th><td class="num">2</td></tr>
+                  <tr><th scope="row">Evaluation splits</th><td class="num">2</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><th scope="row">Rejected</th><td class="num">28</td></tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <h3>Block importance (split_user)</h3>
+        <p class="measure">Mean AUC drop when a block is shuffled on held-out data, over five permutations. The sd column (“±” in the header) is the standard deviation across those five permutations.</p>
+        <div class="measure">
+<pre class="code"><code>split_user — mean AUC drop, five permutations, ± is sd
+
+block                features   auc_drop        sd
+poi attributes             20     0.0673    0.0038
+trip context               19     0.0221    0.0085
+learned profile             9     0.0043    0.0019
+stated preference          17    -0.0020    0.0019</code></pre>
+        </div>
+        <p class="measure">Blocks are the model’s internal partition, not the five objective families: travel style and travel context both land in trip context. split_temporal gives 9 / 54 / 83 / 17 after one-hot encoding.</p>
+        <div class="callout">
+          <h3 class="callout__title">The honest reading</h3>
+          <p><strong>Stated preference contributes nothing</strong> once POI attributes and trip context are in the model. Its drop is <strong>negative</strong> (−0.0020, sd 0.0019): shuffling it slightly improves AUC.</p>
+          <p>That is the measurement motivating the component, not a result to hide. It agrees with the <a href="#finding">founding finding</a>: what tourists declare carries little signal.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7b. Serving constraint (method detail) -->
+    <section class="section" id="serving" aria-labelledby="serving-title">
+      <div class="container">
+        <aside class="card measure" aria-labelledby="serving-title">
+          <span class="eyebrow">Aside</span>
+          <h2 class="card__title" id="serving-title">A serving constraint</h2>
+          <p><code>time_fit</code> and <code>budget_fit</code> are logged per interaction. They are not properties of an attraction. A model using them as logged could only score attractions a tourist had already seen, which rules out ranking the full catalogue.</p>
+          <p>They were recomputed from attributes plus trip context, with travel time taken from registry distance at 35 km/h. Agreement with the logged values: <code>time_fit</code> <strong>71.3%</strong>, <code>budget_fit</code> <strong>92.4%</strong>.</p>
+          <p><strong>55 of the 63 features are servable.</strong></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 8. Results -->
+    <section class="section" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Results</span>
+          <h2 id="results-title">Results</h2>
+          <p class="lead">Three questions: does the learner learn, does the ranker rank better, and is the difference significant. All results are on synthetic data.</p>
+        </div>
+
+        <h3 id="results-auc">Does the learner learn?</h3>
+        <div class="table-wrap" role="region" aria-labelledby="auc-caption" tabindex="0">
+          <table class="table">
+            <caption id="auc-caption">AUC against the tourist’s next interaction, by evidence held. Evidence is the accumulated pseudo-count weight in the Beta posterior. Bands are 0–0.5 (cold), 0.5–2, 2–5 and 5+; the table shows the first three.</caption>
+            <thead>
+              <tr><th scope="col">Evidence</th><th scope="col" class="num">0–0.5<br>(cold)</th><th scope="col" class="num">0.5–2</th><th scope="col" class="num">2–5</th></tr>
+            </thead>
+            <tbody>
+              <tr class="is-highlight"><th scope="row">Beta learner</th><td class="num">0.5069</td><td class="num">0.5231</td><td class="num">0.5442</td></tr>
+              <tr><th scope="row">Fixed-step rule (replaced)</th><td class="num">0.5326</td><td class="num">0.5070</td><td class="num">0.5011</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure">The learner improves as evidence accumulates; the rule it replaced gets worse. At cold start the replaced rule scores higher (0.5326 against 0.5069).</p>
+        <div class="grid my-6">
+          <p class="stat span-5">
+            <span class="stat__value">92.5%</span>
+            <span class="stat__label">The component’s own evaluation reports that the 0–0.5 (cold) band covers 92.5% of this user base. The figure is stated in the report rather than recomputed from the run, and the bands partition scored interactions.</span>
+          </p>
+          <div class="span-7 measure">
+            <p class="mb-0">Cold start is the normal case here, not an edge case. That is why the hybrid blend exists.</p>
+          </div>
+        </div>
+        <p class="measure">Against the never-updated stated-interest prior, the learner gains <strong>+0.0078 AUC, 95% CI [0.0031, 0.0128]</strong>. The gain is small, but the interval excludes zero.</p>
+
+        <h3 id="results-ablation">The full ablation</h3>
+        <div class="table-wrap measure" role="region" aria-labelledby="ablation-caption" tabindex="0">
+          <table class="table">
+            <caption id="ablation-caption">Pooled AUC across all evidence bands, over 8,755 interactions from 630 tourists, highest first.</caption>
+            <thead>
+              <tr><th scope="col">Variant</th><th scope="col" class="num">Pooled AUC</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Ungraded rewards (ablation)</th><td class="num">0.5230</td></tr>
+              <tr><th scope="row">No category coupling (ablation)</th><td class="num">0.5212</td></tr>
+              <tr class="is-highlight"><th scope="row">Beta learner, full</th><td class="num">0.5187</td></tr>
+              <tr><th scope="row">Fixed-step rule</th><td class="num">0.5156</td></tr>
+              <tr><th scope="row">Stated interests only</th><td class="num">0.5107</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure"><strong>The full learner’s pooled AUC (0.5187) is below two of its own ablations</strong>: ungraded rewards (0.5230) and no category coupling (0.5212). It is above the fixed-step rule (0.5156) and stated interests only (0.5107).</p>
+        <p class="measure">The report’s own defence is that the measurement that matters is the trend across evidence bands, not the pooled AUC: the full learner improves as evidence accumulates, and the rule it replaced gets worse.</p>
+
+        <h3 id="results-ndcg">Does it rank better?</h3>
+        <div class="table-wrap" role="region" aria-labelledby="ndcg-caption" tabindex="0">
+          <table class="table">
+            <caption id="ndcg-caption">NDCG@5. Best value per split in bold.</caption>
+            <thead>
+              <tr><th scope="col">Model</th><th scope="col" class="num">split_user<br>(cold start)</th><th scope="col" class="num">split_temporal<br>(has history)</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Linear, derived factors</th><td class="num"><strong>0.5757</strong></td><td class="num">0.8028</td></tr>
+              <tr><th scope="row">Personalized (frozen)</th><td class="num">0.5603</td><td class="num"><strong>0.8172</strong></td></tr>
+              <tr class="is-highlight"><th scope="row">Hybrid (deployed)</th><td class="num">0.5748</td><td class="num">0.8140</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure">Personalization helps where there is history and hurts where there is none. The deployed hybrid tracks the better of the two on both splits, without being best on either.</p>
+
+        <h3 id="results-sig">Is the difference significant?</h3>
+        <div class="table-wrap" role="region" aria-labelledby="sig-caption" tabindex="0">
+          <table class="table table--wide">
+            <caption id="sig-caption">Paired bootstrap over users, 500 resamples. AUC, content scorer against a popularity baseline.</caption>
+            <thead>
+              <tr><th scope="col">Split</th><th scope="col">Significant</th><th scope="col" class="num">Mean Δ AUC</th><th scope="col" class="num">CI</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">split_user</th><td><strong>No</strong> (CI spans zero)</td><td class="num">0.0023</td><td class="num">[−0.0125, 0.0171]</td></tr>
+              <tr><th scope="row">split_temporal</th><td><strong>Yes</strong> (CI excludes zero)</td><td class="num">0.0303</td><td class="num">[0.0032, 0.0538]</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure mb-0">For tourists with history (split_temporal), the content scorer beats the popularity baseline. For unseen, cold-start tourists (split_user) the difference is not significant. This test compares the content scorer with popularity, not the deployed hybrid.</p>
+      </div>
+    </section>
+
+    <!-- 9. Stated limitations -->
+    <section class="section" id="limitations" aria-labelledby="limitations-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Stated limitations</span>
+          <h2 id="limitations-title">What this evaluation cannot show</h2>
+        </div>
+        <div class="callout callout--key">
+          <span class="eyebrow callout__num">Limitation</span>
+          <h3 class="callout__title">Adapting during the trip shows no measurable gain</h3>
+          <p>The adaptive mechanism works end-to-end and is reachable from the running product. But under a clean per-session protocol, adapting during the held-out window barely moves either metric, and both confidence intervals span zero.</p>
+          <div class="grid callout__stats">
+            <p class="stat span-6">
+              <span class="stat__value">+0.0009</span>
+              <span class="stat__label">NDCG from adaptation. Confidence interval spans zero.</span>
+            </p>
+            <p class="stat span-6">
+              <span class="stat__value">+0.0021</span>
+              <span class="stat__label">AUC from adaptation. Confidence interval spans zero.</span>
+            </p>
+          </div>
+          <h4>Why an earlier, larger figure is not used</h4>
+          <p>An earlier phase reported +0.0091 AUC for the same idea. That figure pooled a tourist’s held-out interactions into one ranking group, so items late in the group were scored by a profile that had already seen outcomes from the same group. It was not a measurement of adaptation.</p>
+          <h4>What is real, and what is not shown</h4>
+          <p class="mb-0">The repeat structure the engine exploits is real: 50.9% against 39.7%. What this dataset cannot show is that exploiting it moves a ranking metric over the one or two held-out sessions per tourist it contains.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 11. Contribution -->
+    <section class="section" id="contribution" aria-labelledby="contribution-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Contribution to the system</span>
+          <h2 id="contribution-title">How the planner uses it</h2>
+        </div>
+        <div class="grid">
+          <div class="span-7">
+            <p>The service exposes two endpoints, both relayed by the planner and the gateway:</p>
+<pre class="code"><code>POST /recommend
+POST /interactions</code></pre>
+            <p class="mb-0">Weights update on each interaction, and the updated weights feed the next ranking immediately.</p>
+          </div>
+          <div class="span-5">
+            <h3 class="mt-0">The loop</h3>
+            <ol class="rule-list">
+              <li>Browser</li>
+              <li>Gateway <span class="muted">:4000</span></li>
+              <li>Planner <span class="muted">:8000</span></li>
+              <li>Recommender <span class="muted">:8001</span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. Onward links -->
+    <section class="section section--tint" id="more" aria-labelledby="more-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Continue</span>
+          <h2 id="more-title">Elsewhere on this site</h2>
+        </div>
+        <div class="grid">
+          <article class="span-4 card card--link">
+            <p class="card__meta">Overview</p>
+            <h3 class="card__title"><a href="index.html">Home</a></h3>
+            <p>The research problem, the three gaps and the system architecture.</p>
+            <p class="card__cta" aria-hidden="true">Back to Home</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Haifa M.A.F. &middot; IT22211064</p>
+            <h3 class="card__title"><a href="transport.html">Transport</a></h3>
+            <p>Prices and selects the travel mode for every leg of the itinerary, and supplies the distance, duration and cost shown for each leg.</p>
+            <p class="card__cta" aria-hidden="true">Read the transport page</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Vithanage D. D. H. L. J &middot; IT22369406</p>
+            <h3 class="card__title"><a href="budget.html">Budget</a></h3>
+            <p>Supplies the budget breakdown by category, shown against the group’s total budget on every itinerary, and the explanation of what was left out and why.</p>
+            <p class="card__cta" aria-hidden="true">Read the budget page</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div class="span-6">
+          <p class="site-footer__title">Smart Travel Planner: Personalization and Operational Efficiency for Tourists</p>
+          <p class="mb-0">Project R26-IT-155 &middot; AIMS research group &middot; B.Sc. (Hons) in Information Technology, SLIIT &middot; Supervisor: Prof. Dasuni Nawinna</p>
+        </div>
+        <div class="span-3">
+          <h2>Pages</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="recommendation.html">Recommendation</a></li>
+            <li><a href="transport.html">Transport</a></li>
+            <li><a href="budget.html">Budget</a></li>
+          </ul>
+        </div>
+        <div class="span-3">
+          <h2>Team</h2>
+          <ul>
+            <li>Shazni M.S.M.</li>
+            <li>Haifa M.A.F.</li>
+            <li>Vithanage D. D. H. L. J</li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer__meta mb-0">SLIIT final-year research project, 2026.</p>
+    </div>
+  </footer>
+</body>
+</html>

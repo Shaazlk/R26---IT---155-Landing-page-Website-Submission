@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Travel Planner — R26-IT-155 | SLIIT</title>
+  <meta name="description" content="Smart Travel Planner (R26-IT-155): a SLIIT final-year research project generating personalized, operationally feasible itineraries for tourists visiting Sri Lanka.">
+  <meta name="theme-color" content="#1a2622">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__id">R26-IT-155</span>
+        <span class="brand__name">Smart Travel Planner</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="recommendation.html">Recommendation</a></li>
+          <li><a href="transport.html">Transport</a></li>
+          <li><a href="budget.html">Budget</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1. Hero -->
+    <section class="hero" aria-labelledby="page-title">
+      <div class="container">
+        <span class="eyebrow">SLIIT final-year research project &middot; 2026</span>
+        <h1 id="page-title">Smart Travel Planner<span class="visually-hidden">:</span>
+          <span class="hero__subtitle">Personalization and Operational Efficiency for Tourists</span></h1>
+        <p class="lead">A travel planning system that generates personalized, operationally feasible day-wise itineraries for tourists visiting Sri Lanka.</p>
+        <div class="hero__actions">
+          <a class="button" href="#gap">The research gap</a>
+          <a class="button button--outline" href="#components">The three components</a>
+        </div>
+        <dl class="meta-strip">
+          <div><dt>Project ID</dt><dd>R26-IT-155</dd></div>
+          <div><dt>Institution</dt><dd>SLIIT</dd></div>
+          <div><dt>Degree</dt><dd>B.Sc. (Hons) in Information Technology</dd></div>
+          <div><dt>Research group</dt><dd>AIMS — Autonomous Intelligent Machines and Systems</dd></div>
+          <div><dt>Supervisor</dt><dd>Prof. Dasuni Nawinna</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 2. The research problem -->
+    <section class="section" id="problem" aria-labelledby="problem-title">
+      <div class="container grid">
+        <div class="span-4">
+          <span class="eyebrow">Problem</span>
+          <h2 id="problem-title">The research problem</h2>
+        </div>
+        <div class="span-8 measure">
+          <p class="lead">Tourists visiting Sri Lanka frequently struggle to plan efficient and realistic day-to-day itineraries.</p>
+          <p>The people affected are international and domestic tourists, especially independent ones who rely on digital tools.</p>
+          <p>Existing travel planning apps are largely generic and globally oriented. They do not account for five factors specific to Sri Lanka:</p>
+          <ul class="rule-list">
+            <li>Attraction opening hours</li>
+            <li>Travel distances</li>
+            <li>Visit durations</li>
+            <li>Traffic conditions</li>
+            <li>Route feasibility</li>
+          </ul>
+          <p class="mb-0">So tourists assemble itineraries by hand from fragmented sources. The process is time-consuming, stressful and error-prone.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Why it matters -->
+    <section class="section section--tint" id="impact" aria-labelledby="impact-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Impact</span>
+          <h2 id="impact-title">Why it matters</h2>
+          <p class="lead">Poor itinerary planning has effects in five dimensions.</p>
+        </div>
+        <ul class="grid grid--list" role="list">
+          <li class="span-4 span-sm-6"><div class="card"><h3 class="card__title">Social</h3><p>Poor planning reduces travel satisfaction: attractions are missed and time is used inefficiently.</p></div></li>
+          <li class="span-4 span-sm-6"><div class="card"><h3 class="card__title">Technical</h3><p>There is a gap in decision-support technology tailored to developing tourism contexts.</p></div></li>
+          <li class="span-4 span-sm-6"><div class="card"><h3 class="card__title">Economic</h3><p>Tourist spending becomes less efficient, with a negative effect on small tourism operators.</p></div></li>
+          <li class="span-6 span-sm-6"><div class="card"><h3 class="card__title">Environmental</h3><p>Poorly optimized routes increase unnecessary travel and fuel consumption.</p></div></li>
+          <li class="span-6"><div class="card"><h3 class="card__title">Ethical</h3><p>Without accessible planning tools, first-time and budget-conscious tourists are at a disadvantage.</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Existing systems -->
+    <section class="section" id="existing" aria-labelledby="existing-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Prior work</span>
+          <h2 id="existing-title">Existing systems</h2>
+        </div>
+        <div class="grid">
+          <article class="span-6 card" aria-labelledby="commercial-title">
+            <h3 class="card__title" id="commercial-title">Commercial platforms</h3>
+            <p class="card__meta">Google Travel, TripAdvisor, Sygic Travel, Expedia Trip Planners</p>
+            <h4>What they do</h4>
+            <p>They rely on globally aggregated datasets and offer limited personalization beyond broad preference selection.</p>
+            <h4>Where they fall short</h4>
+            <p>They do not adequately consider attraction-specific opening hours, realistic visit durations, regional travel conditions or route feasibility in developing tourism contexts. The itineraries they generate often lack practicality and need significant manual adjustment.</p>
+          </article>
+          <article class="span-6 card" aria-labelledby="academic-title">
+            <h3 class="card__title" id="academic-title">Academic research</h3>
+            <p class="card__meta">Personalized itinerary recommendation, route optimization, tourism recommender systems</p>
+            <h4>What it does</h4>
+            <p>It uses rule-based planning, heuristics and evolutionary algorithms. Multi-constraint optimization has been shown to improve travel efficiency and satisfaction.</p>
+            <h4>Where it falls short</h4>
+            <p>Most of it targets data-rich, urban or Western tourism environments, and assumes continuous API access, extensive datasets and stable infrastructure. Many proposed models remain conceptual or simulation-level and are never implemented as functional systems evaluated through real user interaction.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. The research gap -->
+    <section class="section" id="gap" aria-labelledby="gap-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Research gap</span>
+          <h2 id="gap-title">Three gaps in existing work</h2>
+        </div>
+        <ol class="gap-list">
+          <li>
+            <div class="callout">
+              <span class="eyebrow callout__num">Gap 1</span>
+              <h3 class="callout__title">Localization</h3>
+              <p>There is a lack of travel planning systems focused on Sri Lanka or other developing countries that integrate localized tourism data and real-world constraints. Commercial platforms draw on globally aggregated data. Academic work mostly assumes data-rich environments with continuous API access.</p>
+            </div>
+          </li>
+          <li>
+            <div class="callout callout--key">
+              <span class="eyebrow callout__num">Gap 2</span>
+              <h3 class="callout__title">Integration</h3>
+              <p>Existing systems treat personalization and feasibility separately. They do not balance the two dynamically within a single itinerary engine. The itineraries they generate often lack practicality and need significant manual adjustment.</p>
+            </div>
+          </li>
+          <li>
+            <div class="callout">
+              <span class="eyebrow callout__num">Gap 3</span>
+              <h3 class="callout__title">Evaluation</h3>
+              <p>Formal usability and effectiveness evaluation of generated itineraries, from the user’s perspective, has received limited attention. Many proposed models remain conceptual or simulation-level and are never evaluated as working systems with real users.</p>
+            </div>
+          </li>
+        </ol>
+        <p class="lead">Together, these point to the need for a lightweight, localized, user-centered smart travel planning system that combines personalization, constraint-aware optimization and practical evaluation in a real-world tourism context.</p>
+        <p class="small muted measure mb-0">The evaluation results reported on this site are computed on synthetic data. They do not include an evaluation with real users.</p>
+      </div>
+    </section>
+
+    <!-- 6. Objectives -->
+    <section class="section" id="objectives" aria-labelledby="objectives-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Objectives</span>
+          <h2 id="objectives-title">Objectives</h2>
+        </div>
+        <blockquote class="pullquote">
+          <p>To design, develop and evaluate a Smart Travel Planner that generates personalized and operationally feasible travel itineraries for tourists visiting Sri Lanka.</p>
+          <footer>Main objective, Topic Assessment Form</footer>
+        </blockquote>
+        <h3>Sub-objectives</h3>
+        <div class="table-wrap" role="region" aria-labelledby="subobj-caption" tabindex="0">
+          <table class="table table--wide">
+            <caption id="subobj-caption">Sub-objectives by component and team member.</caption>
+            <thead>
+              <tr><th scope="col">Component</th><th scope="col">Sub-objective</th><th scope="col">Member</th><th scope="col">Reg. No</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><a href="recommendation.html">Preference modelling and recommendation</a></th>
+                <td>An AI-based preference modelling and recommendation component that learns tourist interests and behaviours to provide personalized attraction recommendations.</td>
+                <td>Shazni M.S.M.</td><td class="num">IT22915368</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="transport.html">Transport recommendation</a></th>
+                <td>Suggest the best mode of transport between attractions based on distance, time, cost and convenience.</td>
+                <td>Haifa M.A.F.</td><td class="num">IT22211064</td>
+              </tr>
+              <tr>
+                <th scope="row"><a href="budget.html">Budget–experience decision intelligence</a></th>
+                <td>An optimized budget allocation strategy across accommodation, activities and transportation that maximizes experiential value, without generating day-wise itineraries.</td>
+                <td>Vithanage D. D. H. L. J</td><td class="num">IT22369406</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. The proposed solution -->
+    <section class="section section--tint" id="solution" aria-labelledby="solution-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Approach</span>
+          <h2 id="solution-title">The proposed solution</h2>
+          <p class="lead">The proposal follows an Input–Process–Output model.</p>
+        </div>
+        <div class="grid">
+          <article class="span-4 card" aria-labelledby="ipo-input">
+            <span class="eyebrow">Input</span>
+            <h3 class="card__title" id="ipo-input">What the planner is given</h3>
+            <h4>From the tourist</h4>
+            <ul>
+              <li>Interests and attraction preferences</li>
+              <li>Budget level</li>
+              <li>Available travel time and trip duration</li>
+              <li>Preferred travel pace</li>
+              <li>Starting location</li>
+            </ul>
+            <h4>From a local tourism knowledge base</h4>
+            <ul>
+              <li>Points of interest</li>
+              <li>Operating hours</li>
+              <li>Average visit durations</li>
+              <li>Geographic coordinates</li>
+            </ul>
+          </article>
+          <article class="span-4 card" aria-labelledby="ipo-process">
+            <span class="eyebrow">Process</span>
+            <h3 class="card__title" id="ipo-process">How the itinerary is built</h3>
+            <p>An automated itinerary generation and optimization engine, applying a hybrid of two techniques:</p>
+            <h4>Rule-based logic</h4>
+            <p>Enforces feasibility constraints such as opening hours and time windows.</p>
+            <h4>Heuristic optimization</h4>
+            <p>Improves route ordering and reduces travel time.</p>
+          </article>
+          <article class="span-4 card" aria-labelledby="ipo-output">
+            <span class="eyebrow">Output</span>
+            <h3 class="card__title" id="ipo-output">What the tourist receives</h3>
+            <p>Personalized day-wise itineraries, with:</p>
+            <ul>
+              <li>Ordered attractions per day</li>
+              <li>Estimated arrival and departure times</li>
+              <li>Travel durations between locations</li>
+              <li>Visual route representations on an interactive map</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. What we built -->
+    <section class="section" id="architecture" aria-labelledby="architecture-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Implementation</span>
+          <h2 id="architecture-title">What we built</h2>
+          <p class="lead">The system runs as separate processes, not a monolith. The proposal describes an Input–Process–Output flow; the built system is organized as a hub with three sibling services.</p>
+        </div>
+
+        <figure class="diagram">
+          <svg class="diagram__wide" viewBox="-4 -4 488 568" role="img" aria-labelledby="arch-svg-title arch-svg-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="arch-svg-title">System architecture: hub-and-spoke orchestration</title>
+            <desc id="arch-svg-desc">The browser, running the React client, talks to the Express API gateway on port 4000. The gateway talks to the planner service on port 8000. The planner is the hub: it fans out to three sibling services, recommendation on port 8001, transport on port 8002 and budget on port 8003. A shared registry sits beneath them.</desc>
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+                <path class="dg-arrow" d="M0,0 L10,5 L0,10 z"/>
+              </marker>
+              <marker id="arrow-spoke" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto">
+                <path class="dg-arrow--spoke" d="M0,0 L10,5 L0,10 z"/>
+              </marker>
+            </defs>
+
+            <!-- Browser -->
+            <rect class="dg-node" x="140" y="0" width="200" height="60"/>
+            <text class="dg-name" x="240" y="26" text-anchor="middle">Browser</text>
+            <text class="dg-sub" x="240" y="46" text-anchor="middle">React client · Vite :5173</text>
+            <line class="dg-edge" x1="240" y1="60" x2="240" y2="99" marker-end="url(#arrow)"/>
+
+            <!-- Gateway -->
+            <rect class="dg-node" x="120" y="100" width="240" height="60"/>
+            <text class="dg-name" x="240" y="126" text-anchor="middle">API gateway</text>
+            <text class="dg-sub" x="240" y="146" text-anchor="middle">Express · :4000</text>
+            <line class="dg-edge" x1="240" y1="160" x2="240" y2="199" marker-end="url(#arrow)"/>
+
+            <!-- Planner hub -->
+            <rect class="dg-hub" x="90" y="200" width="300" height="88"/>
+            <text class="dg-hub-tag" x="240" y="222" text-anchor="middle">HUB</text>
+            <text class="dg-hub-name" x="240" y="248" text-anchor="middle">Planner · :8000</text>
+            <text class="dg-hub-sub" x="240" y="272" text-anchor="middle">itinerary engine + orchestration</text>
+
+            <!-- Spokes -->
+            <line class="dg-spoke" x1="240" y1="290" x2="74.5" y2="376" marker-end="url(#arrow-spoke)"/>
+            <line class="dg-spoke" x1="240" y1="290" x2="240" y2="376" marker-end="url(#arrow-spoke)"/>
+            <line class="dg-spoke" x1="240" y1="290" x2="405.5" y2="376" marker-end="url(#arrow-spoke)"/>
+
+            <!-- Sibling services -->
+            <rect class="dg-node" x="0" y="378" width="149" height="72"/>
+            <text class="dg-name" x="74.5" y="408" text-anchor="middle">Recommendation</text>
+            <text class="dg-sub" x="74.5" y="430" text-anchor="middle">:8001</text>
+            <rect class="dg-node" x="165.5" y="378" width="149" height="72"/>
+            <text class="dg-name" x="240" y="408" text-anchor="middle">Transport</text>
+            <text class="dg-sub" x="240" y="430" text-anchor="middle">:8002</text>
+            <rect class="dg-node" x="331" y="378" width="149" height="72"/>
+            <text class="dg-name" x="405.5" y="408" text-anchor="middle">Budget</text>
+            <text class="dg-sub" x="405.5" y="430" text-anchor="middle">:8003</text>
+            <text class="dg-label" x="240" y="476" text-anchor="middle">SIBLING DOMAIN SERVICES</text>
+
+            <!-- Shared registry -->
+            <rect class="dg-registry" x="0" y="490" width="480" height="70"/>
+            <text class="dg-name" x="240" y="520" text-anchor="middle">Shared registry</text>
+            <text class="dg-sub" x="240" y="544" text-anchor="middle">attractions, localities, hubs and towns</text>
+          </svg>
+          <svg class="diagram__narrow" viewBox="-2 -2 324 604" role="img" aria-labelledby="arch-svg-title-n arch-svg-desc-n" xmlns="http://www.w3.org/2000/svg">
+            <title id="arch-svg-title-n">System architecture: hub-and-spoke orchestration</title>
+            <desc id="arch-svg-desc-n">The browser, running the React client, talks to the Express API gateway on port 4000. The gateway talks to the planner service on port 8000. The planner is the hub: it fans out to three sibling services, recommendation on port 8001, transport on port 8002 and budget on port 8003. A shared registry sits beneath them.</desc>
+            <defs>
+              <marker id="arrow-n" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+                <path class="dg-arrow" d="M0,0 L10,5 L0,10 z"/>
+              </marker>
+              <marker id="arrow-spoke-n" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto">
+                <path class="dg-arrow--spoke" d="M0,0 L10,5 L0,10 z"/>
+              </marker>
+            </defs>
+            <rect class="dg-node" x="40" y="0" width="240" height="56"/>
+            <text class="dg-name" x="160" y="24" text-anchor="middle">Browser</text>
+            <text class="dg-sub" x="160" y="44" text-anchor="middle">React client · Vite :5173</text>
+            <line class="dg-edge" x1="160" y1="56" x2="160" y2="87" marker-end="url(#arrow-n)"/>
+            <rect class="dg-node" x="40" y="88" width="240" height="56"/>
+            <text class="dg-name" x="160" y="112" text-anchor="middle">API gateway</text>
+            <text class="dg-sub" x="160" y="132" text-anchor="middle">Express · :4000</text>
+            <line class="dg-edge" x1="160" y1="144" x2="160" y2="175" marker-end="url(#arrow-n)"/>
+            <rect class="dg-hub" x="10" y="176" width="300" height="84"/>
+            <text class="dg-hub-tag" x="160" y="198" text-anchor="middle">HUB</text>
+            <text class="dg-hub-name" x="160" y="224" text-anchor="middle">Planner · :8000</text>
+            <text class="dg-hub-sub" x="160" y="246" text-anchor="middle">itinerary engine + orchestration</text>
+            <path class="dg-spoke" d="M36,262 V466"/>
+            <line class="dg-spoke" x1="36" y1="314" x2="63" y2="314" marker-end="url(#arrow-spoke-n)"/>
+            <line class="dg-spoke" x1="36" y1="390" x2="63" y2="390" marker-end="url(#arrow-spoke-n)"/>
+            <line class="dg-spoke" x1="36" y1="466" x2="63" y2="466" marker-end="url(#arrow-spoke-n)"/>
+            <rect class="dg-node" x="64" y="284" width="256" height="60"/>
+            <text class="dg-name" x="192" y="310" text-anchor="middle">Recommendation</text>
+            <text class="dg-sub" x="192" y="330" text-anchor="middle">:8001</text>
+            <rect class="dg-node" x="64" y="360" width="256" height="60"/>
+            <text class="dg-name" x="192" y="386" text-anchor="middle">Transport</text>
+            <text class="dg-sub" x="192" y="406" text-anchor="middle">:8002</text>
+            <rect class="dg-node" x="64" y="436" width="256" height="60"/>
+            <text class="dg-name" x="192" y="462" text-anchor="middle">Budget</text>
+            <text class="dg-sub" x="192" y="482" text-anchor="middle">:8003</text>
+            <text class="dg-label" x="192" y="520" text-anchor="middle">SIBLING DOMAIN SERVICES</text>
+            <rect class="dg-registry" x="0" y="536" width="320" height="64"/>
+            <text class="dg-name" x="160" y="562" text-anchor="middle">Shared registry</text>
+            <text class="dg-sub" x="160" y="584" text-anchor="middle">attractions, localities, hubs and towns</text>
+          </svg>
+          <figcaption><strong>Hub-and-spoke orchestration, not a linear pipeline.</strong> The planner is the hub. The three component services are siblings orchestrated by the planner, not stages that feed one another.</figcaption>
+        </figure>
+
+        <div class="grid">
+          <article class="span-6 card" aria-labelledby="prop-gateway">
+            <span class="eyebrow">Design property</span>
+            <h3 class="card__title" id="prop-gateway">The browser only talks to the gateway</h3>
+            <p>The browser only ever talks to the gateway. The gateway only ever talks to the planner. The planner fans out to the three domain services.</p>
+          </article>
+          <article class="span-6 card" aria-labelledby="prop-degrade">
+            <span class="eyebrow">Design property</span>
+            <h3 class="card__title" id="prop-degrade">The system degrades visibly</h3>
+            <p>If one service is unreachable, the plan is still returned, with a banner naming which part used a fallback.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Localized data -->
+    <section class="section" id="registry" aria-labelledby="registry-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Localized data</span>
+          <h2 id="registry-title">The registry: the localization answer</h2>
+        </div>
+
+        <div class="grid">
+          <p class="stat span-4">
+            <span class="stat__value">2,907</span>
+            <span class="stat__label">places you can start or end a trip from: curated localities, transport hubs and derived towns</span>
+          </p>
+          <p class="stat span-4">
+            <span class="stat__value">2,778</span>
+            <span class="stat__label">of those 2,907 are towns derived from the POI dataset</span>
+          </p>
+          <p class="stat span-4">
+            <span class="stat__value">258</span>
+            <span class="stat__label">attractions, counted separately; they are not part of the 2,907</span>
+          </p>
+        </div>
+
+        <div class="grid mt-7">
+          <div class="span-7">
+            <div class="table-wrap" role="region" aria-labelledby="registry-caption" tabindex="0">
+              <table class="table table--wide">
+                <caption id="registry-caption">Registry entries by prefix.</caption>
+                <thead>
+                  <tr><th scope="col">Prefix</th><th scope="col">Meaning</th><th scope="col" class="num">Count</th><th scope="col">Trip start or end</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row"><code>CP</code></th><td>Attraction (point of interest)</td><td class="num">258</td><td>No</td></tr>
+                  <tr><th scope="row"><code>CL</code></th><td>Locality, curated and reviewed</td><td class="num">104</td><td>Yes</td></tr>
+                  <tr><th scope="row"><code>CH</code></th><td>Transport hub</td><td class="num">25</td><td>Yes</td></tr>
+                  <tr><th scope="row"><code>CT</code></th><td>Town derived from the POI dataset</td><td class="num">2,778</td><td>Yes</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><th scope="row" colspan="2">Places you can start or end a trip from (<code>CL</code> + <code>CH</code> + <code>CT</code>)</th><td class="num">2,907</td><td></td></tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="span-5">
+            <h3 class="mt-0">Why the town tier exists</h3>
+            <p>The <code>CT</code> tier exists because 129 curated localities and hubs could not cover a real trip. Someone starting from Aluthgama had no way to say so.</p>
+            <h3>Why coordinates are medians</h3>
+            <p class="mb-0">Each town’s coordinate is the median of the POIs assigned to it, so one mis-geocoded row cannot drag a town into the sea.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Technologies used -->
+    <section class="section" id="technologies" aria-labelledby="technologies-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Stack</span>
+          <h2 id="technologies-title">Technologies used</h2>
+        </div>
+        <div class="grid">
+          <article class="span-3 span-sm-6 card" aria-labelledby="tech-backend">
+            <h3 class="card__title" id="tech-backend">Backend</h3>
+            <ul>
+              <li>Python 3.12+</li>
+              <li>FastAPI, for the planner and the three component services</li>
+              <li>Pydantic contracts, exported to JSON Schema</li>
+              <li>Node.js 20+ and Express, for the gateway</li>
+            </ul>
+          </article>
+          <article class="span-3 span-sm-6 card" aria-labelledby="tech-frontend">
+            <h3 class="card__title" id="tech-frontend">Frontend</h3>
+            <ul>
+              <li>React</li>
+              <li>Vite</li>
+            </ul>
+          </article>
+          <article class="span-3 span-sm-6 card" aria-labelledby="tech-data">
+            <h3 class="card__title" id="tech-data">Data</h3>
+            <ul>
+              <li>MongoDB Atlas, for storage</li>
+              <li>scikit-learn</li>
+              <li>pandas</li>
+              <li>numpy</li>
+              <li>joblib</li>
+            </ul>
+          </article>
+          <article class="span-3 span-sm-6 card" aria-labelledby="tech-tooling">
+            <h3 class="card__title" id="tech-tooling">Tooling</h3>
+            <ul>
+              <li>OSRM, for route calibration and validation</li>
+              <li>draw.io, for architecture diagrams</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. The three components -->
+    <section class="section section--tint" id="components" aria-labelledby="components-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Components</span>
+          <h2 id="components-title">The three components</h2>
+          <p class="lead">Each component is a separate service. Each has its own page with its method, results and stated limitations.</p>
+        </div>
+        <div class="grid">
+          <article class="span-4 card card--link">
+            <p class="card__meta">Shazni M.S.M. &middot; IT22915368</p>
+            <h3 class="card__title"><a href="recommendation.html">Recommendation</a></h3>
+            <p>Ranks attractions for each tourist and updates their preference weights on every interaction, so the next ranking uses them immediately.</p>
+            <p class="card__cta" aria-hidden="true">Read the recommendation page</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Haifa M.A.F. &middot; IT22211064</p>
+            <h3 class="card__title"><a href="transport.html">Transport</a></h3>
+            <p>Prices and selects the travel mode for every leg of the itinerary, and supplies the distance, duration and cost shown for each leg.</p>
+            <p class="card__cta" aria-hidden="true">Read the transport page</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Vithanage D. D. H. L. J &middot; IT22369406</p>
+            <h3 class="card__title"><a href="budget.html">Budget</a></h3>
+            <p>Supplies the budget breakdown by category, shown against the group’s total budget on every itinerary, and the explanation of what was left out and why.</p>
+            <p class="card__cta" aria-hidden="true">Read the budget page</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div class="span-6">
+          <p class="site-footer__title">Smart Travel Planner: Personalization and Operational Efficiency for Tourists</p>
+          <p class="mb-0">Project R26-IT-155 &middot; AIMS research group &middot; B.Sc. (Hons) in Information Technology, SLIIT &middot; Supervisor: Prof. Dasuni Nawinna</p>
+        </div>
+        <div class="span-3">
+          <h2>Pages</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="recommendation.html">Recommendation</a></li>
+            <li><a href="transport.html">Transport</a></li>
+            <li><a href="budget.html">Budget</a></li>
+          </ul>
+        </div>
+        <div class="span-3">
+          <h2>Team</h2>
+          <ul>
+            <li>Shazni M.S.M.</li>
+            <li>Haifa M.A.F.</li>
+            <li>Vithanage D. D. H. L. J</li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer__meta mb-0">SLIIT final-year research project, 2026.</p>
+    </div>
+  </footer>
+</body>
+</html>

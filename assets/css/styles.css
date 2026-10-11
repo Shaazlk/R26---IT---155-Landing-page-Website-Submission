@@ -1,0 +1,709 @@
+/* ==========================================================================
+   R26-IT-155 Smart Travel Planner — project website design system
+   Palette reused from the product (app/client/src/styles.css).
+   Modernist: strict grid, flat surfaces, one accent, type carries hierarchy.
+   No gradients, no shadows, no pill shapes, no webfonts.
+
+   Contrast (WCAG 2.x, measured against the hex values below):
+     Charcoal pine on white 15.62  | on Mist 12.32   -> body text
+     Deep forest   on white 11.85  | on Mist  9.34   -> headings
+     Pine teal     on white  5.88  | on Mist  4.64   -> links, eyebrows
+     Muted ink     on white  6.84  | on Mist  5.40   -> secondary text
+     Mint frost    on white  1.87  (fails)  -> fills/decoration on light only
+     Sage          on white  2.39  (fails)  -> borders/decoration only
+     Mint frost    on Charcoal 8.34         -> text/active state on dark only
+     Mist          on Charcoal 12.32        -> text on dark
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  /* Palette, named by role */
+  --mist: #dce7e1;          /* tinted surfaces */
+  --sage: #8faf9b;          /* borders, secondary marks — never text on light */
+  --mint: #4fd1c0;          /* primary accent, active states — text only on dark */
+  --pine: #2f6f62;          /* links, eyebrows */
+  --forest: #1e3d34;        /* headings, solid buttons */
+  --charcoal: #1a2622;      /* body text, dark ground */
+
+  /* Derived roles */
+  --white: #ffffff;
+  --ink: var(--charcoal);
+  --ink-muted: #4a5f58;     /* product's --ink-2; 6.84:1 on white */
+  --surface: var(--white);
+  --surface-tint: var(--mist);
+  --surface-dark: var(--charcoal);
+  --on-dark: var(--mist);
+  --border: var(--sage);
+  --border-subtle: #d3e0d9; /* product's --line */
+  --link: var(--pine);
+  --link-hover: var(--forest);
+  --accent: var(--mint);
+  --focus: var(--forest);         /* focus ring on light surfaces */
+  --focus-on-dark: var(--mint);   /* focus ring on dark surfaces */
+
+  /* Type */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  --fs-small: 0.875rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --fs-h4: 1.125rem;
+  --fs-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+  --fs-h2: clamp(1.625rem, 1.35rem + 1.2vw, 2.25rem);
+  --fs-h1: clamp(2.125rem, 1.6rem + 2.4vw, 3.5rem);
+  --fs-stat: clamp(2.25rem, 1.8rem + 2vw, 3.25rem);
+
+  --lh-tight: 1.15;
+  --lh-body: 1.65;
+
+  /* Space (8px base) */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+
+  /* Layout */
+  --container: 72rem;
+  --gutter: 1rem;           /* 16px side gutter at phone width */
+  --grid-gap: var(--s-5);
+  --rule: 1px solid var(--border-subtle);
+  --radius: 0;              /* flat, square */
+  --header-h: 4rem;
+}
+
+@media (min-width: 720px) {
+  :root { --gutter: 2rem; --grid-gap: var(--s-6); }
+}
+
+/* ---------- 2. Base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--s-5);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  overflow-wrap: break-word;
+}
+
+main { flex: 1 0 auto; }
+/* Space before the footer, unless the page ends on a tinted band. */
+main > :last-child:not(.section--tint) { margin-bottom: var(--s-9); }
+main:focus { outline: none; }
+
+img, svg, video { display: block; max-width: 100%; height: auto; }
+
+p, ul, ol, dl, figure, blockquote, pre, table { margin: 0 0 var(--s-4); }
+ul, ol { padding-left: 1.25em; }
+li + li { margin-top: var(--s-1); }
+
+hr { border: 0; border-top: var(--rule); margin: var(--s-7) 0; }
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 3. Type scale ---------- */
+h1, h2, h3, h4 {
+  margin: 0 0 var(--s-4);
+  color: var(--forest);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+}
+h1 { font-size: var(--fs-h1); letter-spacing: -0.025em; max-width: 20ch; }
+h2 { font-size: var(--fs-h2); letter-spacing: -0.02em; margin-top: var(--s-7); }
+h3 { font-size: var(--fs-h3); margin-top: var(--s-6); }
+h4 { font-size: var(--fs-h4); margin-top: var(--s-5); }
+h2:first-child, h3:first-child, h4:first-child,
+.eyebrow + h2, .eyebrow + h3 { margin-top: 0; }
+
+.lead { font-size: var(--fs-lead); line-height: 1.55; max-width: 62ch; }
+.small, small { font-size: var(--fs-small); line-height: 1.5; }
+.muted { color: var(--ink-muted); }
+.measure { max-width: 68ch; }
+
+.eyebrow {
+  display: block;
+  margin: 0 0 var(--s-3);
+  color: var(--pine);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- 4. Layout: container, section, 12-column grid ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: var(--s-8); }
+.section + .section { border-top: var(--rule); }
+.section--tint { background: var(--surface-tint); border-top: 0; }
+.section--tint + .section { border-top: 0; }
+@media (min-width: 720px) {
+  .section { padding-block: var(--s-9); }
+}
+
+
+/* Mobile first: every column spans the full row; spans apply from 720px. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.grid > * { grid-column: span 12; min-width: 0; }
+
+@media (min-width: 720px) {
+  .grid > .span-3  { grid-column: span 3; }
+  .grid > .span-4  { grid-column: span 4; }
+  .grid > .span-5  { grid-column: span 5; }
+  .grid > .span-6  { grid-column: span 6; }
+  .grid > .span-7  { grid-column: span 7; }
+  .grid > .span-8  { grid-column: span 8; }
+}
+
+/* Half-width from 360px+ small screens, for stat rows */
+@media (min-width: 480px) and (max-width: 719.98px) {
+  .grid > .span-sm-6 { grid-column: span 6; }
+}
+
+
+/* ---------- 5. Components ---------- */
+
+/* Card — flat, bordered, square */
+.card {
+  height: 100%;
+  padding: var(--s-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.card > :last-child { margin-bottom: 0; }
+.card__title { margin-top: 0; font-size: var(--fs-h4); }
+
+/* Stat — big figure + caption. The mint rule is decorative only. */
+.stat {
+  margin: 0;
+  padding-top: var(--s-4);
+  border-top: 4px solid var(--accent);
+}
+.stat__value {
+  display: block;
+  color: var(--forest);
+  font-size: var(--fs-stat);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.stat__label {
+  display: block;
+  margin-top: var(--s-2);
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+  line-height: 1.45;
+}
+
+/* Table — results tables. Wrap in .table-wrap so wide tables scroll
+   inside their box instead of the page scrolling sideways. */
+.table-wrap {
+  margin: 0 0 var(--s-5);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 2px solid var(--forest);
+}
+.table-wrap:focus-visible { outline-offset: 0; }
+.table-wrap > .table { margin: 0; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+.table caption {
+  padding: var(--s-3) 0;
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+  text-align: left;
+  caption-side: bottom;
+}
+.table th,
+.table td {
+  padding: var(--s-3) var(--s-4) var(--s-3) 0;
+  border-bottom: var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+.table th:last-child,
+.table td:last-child { padding-right: 0; }
+.table thead th {
+  color: var(--forest);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+.table tbody th { font-weight: 600; color: var(--ink); }
+.table .num { text-align: right; white-space: nowrap; }
+.table tr.is-highlight > * { background: var(--surface-tint); }
+.table strong { color: var(--forest); }
+
+/* Callout — stated limitations and honest findings */
+.callout {
+  margin: 0 0 var(--s-5);
+  padding: var(--s-5);
+  background: var(--surface-tint);
+  border-left: 4px solid var(--forest);
+}
+.callout > :last-child { margin-bottom: 0; }
+.callout__title {
+  margin: 0 0 var(--s-3);
+  color: var(--forest);
+  font-size: var(--fs-h4);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Code — monospace block (and inline <code>) */
+code, kbd, samp, .code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+:not(pre) > code {
+  padding: 0.05em 0.3em;
+  background: var(--surface-tint);
+  color: var(--charcoal);
+}
+.code {
+  display: block;
+  margin: 0 0 var(--s-5);
+  padding: var(--s-4) var(--s-5);
+  overflow-x: auto;
+  background: var(--surface-tint);
+  border-left: 4px solid var(--sage);
+  color: var(--charcoal);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre;
+  tab-size: 2;
+}
+.code code { padding: 0; background: none; font-size: inherit; }
+
+/* Button — solid, square */
+.button {
+  display: inline-block;
+  padding: var(--s-3) var(--s-5);
+  background: var(--forest);
+  border: 2px solid var(--forest);
+  border-radius: var(--radius);
+  color: var(--white);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:hover { background: var(--charcoal); border-color: var(--charcoal); color: var(--white); }
+.button--outline { background: transparent; color: var(--forest); }
+.button--outline:hover { background: var(--forest); color: var(--white); }
+
+/* ---------- 6. Skip link ---------- */
+.skip-link {
+  position: absolute;
+  top: var(--s-2);
+  left: var(--s-2);
+  z-index: 100;
+  padding: var(--s-2) var(--s-4);
+  background: var(--white);
+  color: var(--forest);
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+
+/* ---------- 7. Site header and nav ---------- */
+.site-header {
+  background: var(--surface-dark);
+  color: var(--on-dark);
+  border-bottom: 4px solid var(--accent);
+}
+.site-header :focus-visible { outline-color: var(--focus-on-dark); }
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--s-5);
+  min-height: var(--header-h);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--s-3);
+  color: var(--white);
+  text-decoration: none;
+  line-height: 1.2;
+}
+.brand:hover { color: var(--white); }
+.brand__id {
+  color: var(--mint);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.brand__name { font-size: 1.0625rem; font-weight: 700; }
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 2.75rem;
+  padding: var(--s-2) var(--s-4);
+  background: transparent;
+  border: 1px solid var(--on-dark);
+  border-radius: var(--radius);
+  color: var(--on-dark);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.nav-toggle:hover { background: var(--forest); }
+.nav-toggle[aria-expanded="true"] { border-color: var(--mint); color: var(--mint); }
+
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav__list li + li { margin-top: 0; }
+
+.site-nav a {
+  display: block;
+  padding: var(--s-4) var(--s-4);
+  color: var(--on-dark);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.site-nav a:hover {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+/* Active page: mint text + mint bar + bold — never colour alone. */
+.site-nav a[aria-current="page"] {
+  color: var(--mint);
+  font-weight: 700;
+  border-bottom-color: var(--mint);
+}
+
+/* Collapse under 720px. Menu only hides once JS has run (html.js),
+   so the nav stays usable with scripts disabled. */
+@media (max-width: 719.98px) {
+  .js .nav-toggle { display: inline-flex; }
+  .site-nav { flex-basis: 100%; }
+  .js .site-nav { display: none; }
+  .js .site-nav.is-open { display: block; }
+  .site-nav__list { flex-direction: column; padding-bottom: var(--s-3); }
+  .site-nav a {
+    padding: var(--s-3) 0 var(--s-3) var(--s-4);
+    border-bottom: 0;
+    border-left: 3px solid transparent;
+  }
+  .site-nav a[aria-current="page"] { border-left-color: var(--mint); }
+}
+@media (min-width: 720px) {
+  .site-nav a { padding-inline: var(--s-3); }
+  .site-nav__list { margin-right: calc(-1 * var(--s-3)); }
+}
+
+
+/* ---------- 8. Site footer ---------- */
+.site-footer {
+  margin-top: 0;
+  padding-block: var(--s-7) var(--s-6);
+  background: var(--surface-dark);
+  color: var(--on-dark);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+}
+.site-footer :focus-visible { outline-color: var(--focus-on-dark); }
+.site-footer a { color: var(--on-dark); }
+.site-footer a:hover { color: var(--white); }
+.site-footer h2 {
+  margin: 0 0 var(--s-3);
+  color: var(--mint);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.site-footer__title { margin: 0 0 var(--s-2); color: var(--white); font-size: 1rem; font-weight: 700; }
+.site-footer ul { margin: 0; padding: 0; list-style: none; }
+.site-footer__meta {
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--forest);
+}
+
+/* ---------- 9. Mist-surface contrast guard ----------
+   Pine on Mist is only 4.64:1, so links and eyebrows on Mist surfaces
+   switch to Deep forest (9.34:1). */
+.section--tint,
+.callout { --link: var(--forest); --link-hover: var(--charcoal); }
+.section--tint .eyebrow,
+.section--tint .stages li::before,
+.callout .eyebrow { color: var(--forest); }
+
+/* ---------- 10. Page patterns (added Phase 3) ---------- */
+
+/* Hero */
+.hero { padding-block: var(--s-8) var(--s-7); border-bottom: var(--rule); }
+.hero h1 { max-width: 22ch; }
+.hero__subtitle {
+  display: block;
+  margin-top: var(--s-3);
+  color: var(--ink);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.hero .lead { margin-top: var(--s-5); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+
+/* Metadata strip — label/value pairs on a top rule */
+.meta-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--s-4) var(--s-5);
+  margin: var(--s-7) 0 0;
+  padding-top: var(--s-4);
+  border-top: 2px solid var(--forest);
+}
+.meta-strip div { min-width: 0; }
+.meta-strip dt {
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.meta-strip dd { margin: var(--s-1) 0 0; color: var(--forest); font-weight: 600; line-height: 1.4; }
+
+/* Section heading row: eyebrow + h2 + optional lead */
+.section-head { margin-bottom: var(--s-6); }
+.section-head h2 { margin-top: 0; }
+.section-head > :last-child { margin-bottom: 0; }
+
+/* Ruled list — short items on hairlines, e.g. the five local factors */
+.rule-list { margin: 0 0 var(--s-5); padding: 0; list-style: none; border-top: var(--rule); }
+.rule-list li {
+  margin: 0;
+  padding: var(--s-3) 0;
+  border-bottom: var(--rule);
+  color: var(--forest);
+  font-weight: 600;
+}
+
+/* Research gap list. The key gap (integration) is inverted to Deep forest:
+   white 11.85:1, Mist 9.34:1, Mint label 6.33:1. */
+.gap-list { margin: 0 0 var(--s-6); padding: 0; list-style: none; }
+.gap-list > li + li { margin-top: var(--s-4); }
+.gap-list .callout { margin: 0; }
+.gap-list .callout p { max-width: 68ch; }
+.callout__num { margin-bottom: var(--s-2); }
+.callout--key {
+  padding: var(--s-6) var(--s-5);
+  background: var(--forest);
+  border-left: 8px solid var(--mint);
+  color: var(--mist);
+  --link: var(--mint);
+  --link-hover: var(--white);
+}
+.callout--key .callout__title { color: var(--white); font-size: var(--fs-h2); line-height: 1.15; }
+.callout--key .eyebrow { color: var(--mint); }
+.callout--key p { font-size: var(--fs-lead); line-height: 1.55; max-width: 60ch; }
+.callout--key :focus-visible { outline-color: var(--mint); }
+/* Figures inside the key callout (e.g. null results given equal weight):
+   white 11.85:1 and Mist 9.34:1 on Deep forest. */
+.callout__stats { margin-block: var(--s-5) var(--s-6); }
+.callout--key .stat__value { color: var(--white); }
+.callout--key .stat__label { color: var(--mist); }
+.callout--key h4 { color: var(--white); }
+@media (min-width: 720px) {
+  .callout--key { padding: var(--s-7) var(--s-6); }
+}
+
+/* Pull-quote — one statement, set large. Mint rule is decorative. */
+.pullquote {
+  margin: 0 0 var(--s-7);
+  padding: var(--s-2) 0 var(--s-2) var(--s-5);
+  border-left: 4px solid var(--accent);
+}
+.pullquote p {
+  margin: 0;
+  color: var(--forest);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.35;
+  max-width: 40ch;
+}
+.pullquote footer { margin-top: var(--s-3); color: var(--ink-muted); font-size: var(--fs-small); }
+
+/* Diagram — inline SVG, styled from the palette tokens */
+.diagram { margin: 0 0 var(--s-6); }
+.diagram svg { width: 100%; max-width: 40rem; margin-inline: auto; }
+/* Two drawings of the same diagram: the narrow one stacks the services so
+   labels stay legible at 360px instead of scaling down to ~7px. */
+.diagram__narrow { display: block; max-width: 22rem !important; }
+.diagram__wide { display: none; }
+@media (min-width: 560px) {
+  .diagram__narrow { display: none; }
+  .diagram__wide { display: block; }
+}
+.diagram figcaption {
+  max-width: 40rem;
+  margin: var(--s-4) auto 0;
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+}
+.diagram figcaption strong { color: var(--forest); }
+.dg-node { fill: var(--white); stroke: var(--forest); stroke-width: 2; }
+.dg-hub { fill: var(--forest); stroke: var(--mint); stroke-width: 3; }
+.dg-registry { fill: var(--mist); stroke: var(--sage); stroke-width: 2; stroke-dasharray: 6 4; }
+.dg-edge { stroke: var(--pine); stroke-width: 2; fill: none; }
+.dg-spoke { stroke: var(--forest); stroke-width: 3; fill: none; }
+.dg-arrow { fill: var(--pine); }
+.dg-arrow--spoke { fill: var(--forest); }
+.dg-name { fill: var(--forest); font-size: 16px; font-weight: 700; }
+.dg-sub { fill: var(--ink-muted); font-size: 14px; }
+.dg-hub-name { fill: var(--white); font-size: 18px; font-weight: 700; }
+.dg-hub-sub { fill: var(--mist); font-size: 14px; }
+.dg-hub-tag { fill: var(--mint); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; }
+.dg-label { fill: var(--ink-muted); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; }
+
+/* Card that links to a page: the whole card is the target. */
+.card--link { position: relative; }
+.card--link .card__title a { text-decoration: none; }
+.card--link .card__title a::after { content: ""; position: absolute; inset: 0; }
+.card--link:hover { border-color: var(--forest); }
+.card--link:hover .card__title a { text-decoration: underline; }
+.card--link .card__title a:focus-visible { outline: none; }
+.card--link:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+.card__meta { margin-bottom: var(--s-3); color: var(--ink-muted); font-size: var(--fs-small); }
+.card__cta { margin-top: var(--s-4); color: var(--forest); font-weight: 600; font-size: var(--fs-small); }
+
+/* Compact list inside cards */
+.card ul { margin-bottom: 0; }
+.card h4 { margin-top: var(--s-4); margin-bottom: var(--s-2); font-size: 0.9375rem; }
+.card h4:first-of-type { margin-top: 0; }
+
+/* A grid that is also a list (keeps list semantics; drop bullets) */
+.grid--list { margin: 0; padding: 0; list-style: none; }
+.grid--list > li + li { margin-top: 0; }
+
+/* Wide results table: keeps columns readable and scrolls inside .table-wrap */
+.table--wide { min-width: 40rem; }
+
+/* Ordered stages — a numbered sequence where the order is the argument.
+   Four across from 720px, stacked below. Pine numerals on white: 5.88:1. */
+.stages {
+  counter-reset: stage;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5);
+  margin: 0 0 var(--s-5);
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 720px) {
+  .stages { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.stages li { counter-increment: stage; margin: 0; padding-top: var(--s-3); border-top: 4px solid var(--forest); }
+.stages li + li { margin-top: 0; }
+.stages li::before {
+  content: counter(stage, decimal-leading-zero);
+  display: block;
+  color: var(--pine);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.stages__name { display: block; margin-top: var(--s-1); color: var(--forest); font-size: var(--fs-h4); font-weight: 700; line-height: 1.3; }
+.stages__desc { display: block; margin-top: var(--s-2); color: var(--ink-muted); font-size: var(--fs-small); line-height: 1.5; }
+
+/* Results-table footer row */
+.table tfoot th,
+.table tfoot td { border-bottom: 0; border-top: 2px solid var(--forest); font-weight: 700; color: var(--forest); }
+
+/* ---------- 11. Utilities ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.mt-0 { margin-top: 0 !important; }
+.mt-7 { margin-top: var(--s-7) !important; }
+.my-6 { margin-block: var(--s-6) !important; }
+.mb-0 { margin-bottom: 0 !important; }

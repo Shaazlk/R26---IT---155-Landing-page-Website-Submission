@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Budget Component — Smart Travel Planner (R26-IT-155)</title>
+  <meta name="description" content="Budget–experience decision intelligence component of the Smart Travel Planner (R26-IT-155, SLIIT), by Vithanage D. D. H. L. J: method, results and stated limitations.">
+  <meta name="theme-color" content="#1a2622">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__id">R26-IT-155</span>
+        <span class="brand__name">Smart Travel Planner</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="recommendation.html">Recommendation</a></li>
+          <li><a href="transport.html">Transport</a></li>
+          <li><a href="budget.html" aria-current="page">Budget</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1. Header -->
+    <section class="hero" aria-labelledby="page-title">
+      <div class="container">
+        <span class="eyebrow">Component &middot; Budget</span>
+        <h1 id="page-title">Budget–experience decision intelligence</h1>
+        <dl class="meta-strip">
+          <div><dt>Owner</dt><dd>Vithanage D. D. H. L. J</dd></div>
+          <div><dt>Reg. No</dt><dd>IT22369406</dd></div>
+          <div><dt>Service</dt><dd><code>budget/</code></dd></div>
+          <div><dt>Port</dt><dd>8003</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 2. Sub-objective, tasks, exclusions -->
+    <section class="section" id="subobjective" aria-labelledby="subobjective-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Sub-objective</span>
+          <h2 id="subobjective-title">What this component sets out to do</h2>
+        </div>
+        <blockquote class="pullquote">
+          <p>To design and implement a budget–experience decision intelligence component that produces an optimized budget allocation strategy indicating how a tourist’s financial resources should be distributed across accommodation, activities and transportation to maximize experiential value — without generating day-wise itineraries or schedules.</p>
+          <footer>Sub-objective, Topic Assessment Form</footer>
+        </blockquote>
+        <div class="grid">
+          <div class="span-7">
+            <h3 class="mt-0">Tasks</h3>
+            <ol class="mb-0">
+              <li>Analyse existing tourism budgeting and cost-handling approaches.</li>
+              <li>Identify experience-impact factors that influence satisfaction independently of scheduling.</li>
+              <li>Define a quantitative experience value representation relating spending levels to perceived experience quality.</li>
+              <li>Develop an AI-assisted decision model for optimal budget distribution.</li>
+              <li>Generate an allocation output consumable by the itinerary and routing components.</li>
+              <li>Evaluate how allocation strategies affect experience quality under varying budget constraints.</li>
+            </ol>
+          </div>
+          <div class="span-5">
+            <div class="callout mb-0">
+              <span class="eyebrow callout__num">What it excludes</span>
+              <h3 class="callout__title">An allocation profile, not a plan</h3>
+              <p>This component does not generate day-wise itineraries. It does not produce schedules.</p>
+              <p class="mb-0">Its output is a strategic allocation profile: how the money should be divided across categories.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Novelty -->
+    <section class="section" id="novelty" aria-labelledby="novelty-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Novelty</span>
+          <h2 id="novelty-title">The novelty claim</h2>
+        </div>
+        <blockquote class="pullquote mb-0">
+          <p>A budget–experience decision intelligence mechanism outputting a strategic financial allocation profile, focused on maximizing experiential value rather than validating or adjusting itineraries. Unlike itinerary-based budgeting, it operates independently of day-wise scheduling and provides cost–experience trade-off intelligence as a standalone decision-support output.</p>
+          <footer>Novelty, Topic Assessment Form</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 4. The four objectives -->
+    <section class="section section--tint" id="objectives" aria-labelledby="objectives-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Method</span>
+          <h2 id="objectives-title">Four objectives</h2>
+          <p class="lead">The method is organized as four objectives.</p>
+        </div>
+        <ol class="stages mb-0">
+          <li><span class="stages__name"><a href="#obj1">Existing approaches</a></span><span class="stages__desc">Five approach families; limitations reproduced on the project’s own data.</span></li>
+          <li><span class="stages__name"><a href="#obj2">Sri Lankan cost data</a></span><span class="stages__desc">A localized pricing reference and a 117-feature training table.</span></li>
+          <li><span class="stages__name"><a href="#obj3">Spending against value</a></span><span class="stages__desc">Response curves per category and budget level.</span></li>
+          <li><span class="stages__name"><a href="#obj4">The optimized split</a></span><span class="stages__desc">The allocation across five spending categories.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Objective 1 -->
+    <section class="section" id="obj1" aria-labelledby="obj1-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Objective 1</span>
+          <h2 id="obj1-title">Existing approaches</h2>
+        </div>
+        <div class="measure">
+          <p><code>reports/existing_approaches_review.md</code> reviews five approach families, with a comparison matrix and three limitations, L1–L3.</p>
+          <p class="mb-0"><code>reports/existing_approaches_evidence.md</code> then reproduces each limitation <strong>on the project’s own data</strong>, rather than asserting it from literature.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Objective 2 -->
+    <section class="section" id="obj2" aria-labelledby="obj2-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Objective 2</span>
+          <h2 id="obj2-title">Sri Lankan cost data and feature table v2</h2>
+        </div>
+        <div class="grid">
+          <div class="span-7">
+            <h3 class="mt-0">A localized pricing reference</h3>
+            <ul class="rule-list">
+              <li>Entry fees by district</li>
+              <li>Transport LKR/km by mode</li>
+              <li>Room-night rates</li>
+              <li>Destination index</li>
+              <li>Registered supply</li>
+            </ul>
+          </div>
+          <div class="span-5">
+            <p class="stat">
+              <span class="stat__value">117</span>
+              <span class="stat__label">features in <code>training_table_v2.csv</code>, on which the deployed models train: v1 plus traveller profile and local pricing.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="grid mt-7">
+          <article class="span-6 card" aria-labelledby="parity-title">
+            <span class="eyebrow">Engineering decision</span>
+            <h3 class="card__title" id="parity-title">Train/serve parity</h3>
+            <p>The service computes the same features per request through the <strong>same code that built the training table</strong> (<code>scripts/feature_engineering.py</code>).</p>
+            <p>It <strong>refuses to start</strong> without <code>config/pricing_reference.json</code>.</p>
+            <p class="mb-0">Train/serve feature parity is enforced by tests.</p>
+          </article>
+          <article class="span-6 card" aria-labelledby="inferred-title">
+            <span class="eyebrow">Missing inputs</span>
+            <h3 class="card__title" id="inferred-title">Inferred, and said so</h3>
+            <p>Requests may omit <code>interests</code>, <code>visitor_market</code> or <code>primary_destination_locality_id</code>.</p>
+            <p class="mb-0">Anything omitted is inferred where possible, and listed back in the response’s <code>profile_inferred</code> field.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Objective 3 -->
+    <section class="section" id="obj3" aria-labelledby="obj3-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Objective 3</span>
+          <h2 id="obj3-title">Spending against experiential value</h2>
+        </div>
+        <div class="callout">
+          <h3 class="callout__title">How to read these effects</h3>
+          <p class="mb-0">The data are observational and synthetic. Every effect is how predicted experience differs between trips that planned different spending, with the other recorded factors at each trip’s own values. It is an association, not a controlled experiment.</p>
+        </div>
+
+        <div class="grid my-6">
+          <p class="stat span-5">
+            <span class="stat__value">0.0493</span>
+            <span class="stat__label">test R² with every spending feature removed, against 0.0538 with them.</span>
+          </p>
+          <div class="span-7 measure">
+            <p class="lead mb-0"><strong>Most of what the model knows about experience comes from who travels and how (interest, transport mode, pace), not from how much is spent.</strong> Removing every spending feature moves test R² only from 0.0538 to 0.0493.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap measure" role="region" aria-labelledby="models-caption" tabindex="0">
+          <table class="table">
+            <caption id="models-caption">Experience models on 1,800 test trips; 20 user-clustered bootstrap refits, seed 42. Source: <code>budget/reports/spend_experience_model.md</code>.</caption>
+            <thead>
+              <tr><th scope="col">Model</th><th scope="col" class="num">RMSE</th><th scope="col" class="num">R²</th></tr>
+            </thead>
+            <tbody>
+              <tr class="is-highlight"><th scope="row">Gradient boosting, all features (deployed)</th><td class="num">0.4408</td><td class="num">0.0538</td></tr>
+              <tr><th scope="row">Gradient boosting, spending features removed</th><td class="num">0.4418</td><td class="num">0.0493</td></tr>
+              <tr><th scope="row">Additive spline model</th><td class="num">0.4424</td><td class="num">0.0469</td></tr>
+              <tr><th scope="row">Mean predictor</th><td class="num">0.4533</td><td class="num">−0.0009</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid">
+          <div class="span-7 measure">
+            <p>Response curves per category and budget level, with bootstrap intervals and reallocation effects.</p>
+            <p><strong>The curves rest on the additive spline model</strong> (R² 0.0469), a separate model from the deployed gradient booster. It was chosen because it is close enough to boosting that its smooth curves are a fair reading of the shape.</p>
+            <p>The curves, with 90% intervals, are served at <code>GET /budget/spend-response</code>.</p>
+            <p class="mb-0"><code>POST /budget/what-if</code> takes an allocation request plus a planned LKR split. It returns predicted experience and over-budget risk <strong>for the service’s own split and for the changed one</strong>, with whether each category’s effect is clear.</p>
+          </div>
+          <div class="span-5">
+<pre class="code"><code>GET  /budget/spend-response
+POST /budget/what-if</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Objective 4 -->
+    <section class="section" id="obj4" aria-labelledby="obj4-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Objective 4</span>
+          <h2 id="obj4-title">The optimized split</h2>
+          <p class="lead"><code>/budget/allocate</code> chooses the split across accommodation, transport, attraction, activity and food_other by maximizing:</p>
+        </div>
+        <div class="measure">
+<pre class="code"><code>mean ensemble experience
+  − lambda × ensemble std
+  − mu     × P(over budget)
+  − kappa  × shift from the typical split</code></pre>
+          <p><strong>Implemented scope.</strong> The TAF sub-objective names three categories (accommodation, activities, transportation). The implemented optimizer splits five, adding attraction and food_other.</p>
+        </div>
+        <div class="grid">
+          <div class="span-7">
+            <h3 class="mt-0">Constrained within</h3>
+            <ol>
+              <li>Local-price floors: room-nights and distance at Sri Lankan rates.</li>
+              <li>The 5th–95th percentile of spend observed for that budget level.</li>
+              <li>Any <code>category_bounds</code> the tourist sets. Equal min and max locks a category.</li>
+            </ol>
+          </div>
+          <div class="span-5">
+            <h3 class="mt-0">The response reports</h3>
+            <ul class="rule-list">
+              <li><code>split_strategy_used</code></li>
+              <li><code>predicted_experience_gain</code> over the typical split</li>
+              <li><code>split_notes</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Results -->
+    <section class="section" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Results</span>
+          <h2 id="results-title">Results</h2>
+          <p class="lead">Two parts, in this order: how well experience can be predicted, and then what the allocation achieves. The first determines how the second should be read. All data is synthetic.</p>
+          <p class="small muted">Source: <code>reports/final_evaluation.md</code></p>
+        </div>
+
+        <h3 id="results-prediction">Part 1: prediction</h3>
+        <div class="table-wrap measure" role="region" aria-labelledby="pred-caption" tabindex="0">
+          <table class="table">
+            <caption id="pred-caption">Experience and over-budget prediction.</caption>
+            <thead>
+              <tr><th scope="col">Result</th><th scope="col" class="num">Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Experience prediction R²</th><td class="num">0.0538</td></tr>
+              <tr><th scope="row">Experience RMSE</th><td class="num">2.77% lower than a mean predictor</td></tr>
+              <tr><th scope="row">Over-budget AUC</th><td class="num">0.6009</td></tr>
+              <tr><th scope="row">Ceiling R² with outcome columns (invalid)</th><td class="num">0.0715</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="measure">The ceiling row is deliberately invalid as a model: it includes outcome columns, such as actual costs. It is run to find how much of the experience score any recorded variable can explain.</p>
+
+        <div class="callout callout--key mt-7">
+          <span class="eyebrow callout__num">The finding that decides the claim</span>
+          <h3 class="callout__title">The forecast is weak, so the contribution is the allocation</h3>
+          <p>Experience prediction is weak: R² is 0.0538. The ceiling test explains why. Experience score is nearly independent of <strong>every</strong> recorded variable, not merely the planning-time ones. R² only reaches 0.0715 even with actual costs included.</p>
+          <p>Therefore the component’s contribution is <strong>the allocation mechanism, not the forecast</strong>. This page does not claim that the forecast works.</p>
+          <p class="mb-0">That is why the comparison below is the result that matters. Both arms of the optimizer comparison use the same predicted values, so it measures allocation rather than prediction.</p>
+        </div>
+
+        <h3 id="results-allocation" class="mt-7">Part 2: the optimizer against the tourist’s own plan</h3>
+        <p class="measure">400 test-split trips. Both arms use the same candidate pools and the same predicted values.</p>
+        <p class="measure"><strong>“Value” here means predicted value, from a model with R² 0.0538.</strong> The optimizer’s ensemble is fitted on one half of the data, and its allocations are scored by a model fitted on the other half, so the comparison is not self-scored.</p>
+
+        <div class="grid my-6">
+          <p class="stat span-5">
+            <span class="stat__value">57.8%</span>
+            <span class="stat__label">of trips where the optimizer delivered more value, working with a mean attraction budget of LKR 25,652 against the plan’s LKR 49,451.</span>
+          </p>
+          <div class="span-7 measure">
+            <p class="mb-0">The optimizer works with roughly half the plan’s attraction money and still delivers more value in 57.8% of trips. <strong>The gain comes from selecting by value per rupee, not from a larger budget.</strong> It selects more attractions with less money: 18.01 on average, against the plan’s 15.46.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap" role="region" aria-labelledby="opt-caption" tabindex="0">
+          <table class="table">
+            <caption id="opt-caption">Optimizer against the tourist’s plan, 400 test-split trips. Optimizer wins, plan wins and ties sum to 100% in each column. Highlighted rows: the attraction budget each arm worked with.</caption>
+            <thead>
+              <tr><th scope="col">Metric</th><th scope="col" class="num">Per-level<br>split</th><th scope="col" class="num">Global<br>split</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Optimizer delivered more value</th><td class="num">57.8%</td><td class="num">54.8%</td></tr>
+              <tr><th scope="row">Plan delivered more value</th><td class="num">36.0%</td><td class="num">36.0%</td></tr>
+              <tr><th scope="row">Ties</th><td class="num">6.2%</td><td class="num">9.2%</td></tr>
+              <tr><th scope="row">Median value gain</th><td class="num">+9.7%</td><td class="num">+9.4%</td></tr>
+              <tr class="is-highlight"><th scope="row">Mean attraction budget, optimizer</th><td class="num">LKR 25,652</td><td class="num">LKR 30,335</td></tr>
+              <tr class="is-highlight"><th scope="row">Mean attraction budget, plan</th><td class="num">LKR 49,451</td><td class="num">LKR 49,451</td></tr>
+              <tr><th scope="row">Mean attractions, optimizer</th><td class="num">18.01</td><td class="num">18.1</td></tr>
+              <tr><th scope="row">Mean attractions, plan</th><td class="num">15.46</td><td class="num">15.46</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <h3 class="callout__title">Caveat: only attraction value is scored</h3>
+          <p>An arm that gives attractions a larger budget therefore wins by construction, and money taken from accommodation or food is not counted against it. The attraction-budget rows are shown so that this effect can be separated.</p>
+          <p><strong>Here the caveat runs the other way.</strong> The optimizer works with LKR 25,652 for attractions against the plan’s LKR 49,451, and still delivers more value in 57.8% of trips. In this comparison the plan is the arm with the larger attraction budget, so the construction favours the plan, and the 57.8% is conservative.</p>
+          <p class="mb-0">What the caveat genuinely limits is any claim about the whole-trip split, since money in the other categories is never scored. The comparison therefore measures how well each arm selects attractions. It does not show that the optimizer’s split across the other categories is better for the trip as a whole.</p>
+        </div>
+
+        <h3 id="results-levels">By budget level</h3>
+        <div class="table-wrap" role="region" aria-labelledby="levels-caption" tabindex="0">
+          <table class="table">
+            <caption id="levels-caption">Per-level split, by budget level.</caption>
+            <thead>
+              <tr><th scope="col">Level</th><th scope="col" class="num">Trips</th><th scope="col" class="num">Optimizer<br>wins</th><th scope="col" class="num">Median<br>gain</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Low</th><td class="num">123</td><td class="num">58.5%</td><td class="num">9.1%</td></tr>
+              <tr><th scope="row">Medium</th><td class="num">177</td><td class="num">57.1%</td><td class="num">9.1%</td></tr>
+              <tr><th scope="row">Premium</th><td class="num">70</td><td class="num">58.6%</td><td class="num">9.7%</td></tr>
+              <tr><th scope="row">Luxury</th><td class="num">30</td><td class="num">56.7%</td><td class="num">19.1%</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><th scope="row">All levels</th><td class="num">400</td><td class="num">57.8%</td><td class="num">+9.7%</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="measure mb-0">The optimizer wins in a similar share of trips at every level, between 56.7% and 58.6%. The largest median gain, 19.1%, comes from the smallest group: 30 Luxury trips.</p>
+      </div>
+    </section>
+
+    <!-- 6. Stated limitations -->
+    <section class="section" id="limitations" aria-labelledby="limitations-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Stated limitations</span>
+          <h2 id="limitations-title">Stated limitations</h2>
+        </div>
+        <div class="callout mb-0">
+          <h3 class="callout__title">Seven stated limitations</h3>
+          <ol class="mb-0">
+            <li><strong>Experience is hard to predict on this data.</strong> This is reported rather than worked around.</li>
+            <li><strong>Accommodation bands are weak evidence.</strong> They come from undated secondary listings with wide spreads, and are usable for plausibility checking only.</li>
+            <li><strong>Candidate pools are synthesized.</strong> The dataset records trip totals, not per-attraction selections.</li>
+            <li><strong><code>accessibility_requirement</code> is 89% null.</strong></li>
+            <li><strong>3 of 78 cost anchors are unmapped,</strong> affecting 342 of 12,000 trips.</li>
+            <li><strong>Attractions are treated as independent.</strong> Two sites in one locality share travel cost in reality; the formulation does not model that.</li>
+            <li><strong>Synthetic data throughout,</strong> so external validity is not established.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Contribution -->
+    <section class="section" id="contribution" aria-labelledby="contribution-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Contribution to the system</span>
+          <h2 id="contribution-title">How the planner uses it</h2>
+        </div>
+        <div class="grid">
+          <article class="span-6 card" aria-labelledby="breakdown-title">
+            <h3 class="card__title" id="breakdown-title">The budget breakdown</h3>
+            <p class="mb-0">The budget breakdown by category, shown against the group’s total budget on every generated itinerary.</p>
+          </article>
+          <article class="span-6 card" aria-labelledby="leftout-title">
+            <h3 class="card__title" id="leftout-title">What was left out, and why</h3>
+            <p class="mb-0">The “what was left out, and why” explanation.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Onward links -->
+    <section class="section section--tint" id="more" aria-labelledby="more-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Continue</span>
+          <h2 id="more-title">Elsewhere on this site</h2>
+        </div>
+        <div class="grid">
+          <article class="span-4 card card--link">
+            <p class="card__meta">Overview</p>
+            <h3 class="card__title"><a href="index.html">Home</a></h3>
+            <p>The research problem, the three gaps and the system architecture.</p>
+            <p class="card__cta" aria-hidden="true">Back to Home</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Shazni M.S.M. &middot; IT22915368</p>
+            <h3 class="card__title"><a href="recommendation.html">Recommendation</a></h3>
+            <p>Ranks attractions for each tourist and updates their preference weights on every interaction, so the next ranking uses them immediately.</p>
+            <p class="card__cta" aria-hidden="true">Read the recommendation page</p>
+          </article>
+          <article class="span-4 card card--link">
+            <p class="card__meta">Haifa M.A.F. &middot; IT22211064</p>
+            <h3 class="card__title"><a href="transport.html">Transport</a></h3>
+            <p>Prices and selects the travel mode for every leg of the itinerary, and supplies the distance, duration and cost shown for each leg.</p>
+            <p class="card__cta" aria-hidden="true">Read the transport page</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div class="span-6">
+          <p class="site-footer__title">Smart Travel Planner: Personalization and Operational Efficiency for Tourists</p>
+          <p class="mb-0">Project R26-IT-155 &middot; AIMS research group &middot; B.Sc. (Hons) in Information Technology, SLIIT &middot; Supervisor: Prof. Dasuni Nawinna</p>
+        </div>
+        <div class="span-3">
+          <h2>Pages</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="recommendation.html">Recommendation</a></li>
+            <li><a href="transport.html">Transport</a></li>
+            <li><a href="budget.html">Budget</a></li>
+          </ul>
+        </div>
+        <div class="span-3">
+          <h2>Team</h2>
+          <ul>
+            <li>Shazni M.S.M.</li>
+            <li>Haifa M.A.F.</li>
+            <li>Vithanage D. D. H. L. J</li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer__meta mb-0">SLIIT final-year research project, 2026.</p>
+    </div>
+  </footer>
+</body>
+</html>
